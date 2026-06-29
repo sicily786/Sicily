@@ -48,10 +48,6 @@ const SIDEBAR_CATS = [
   { en: 'Premium Flower Tub', bn: 'প্রিমিয়াম ফ্লাওয়ার টাব', icon: Flower2 },
   { en: 'Premium Tree Plant', bn: 'প্রিমিয়াম ট্রি প্ল্যান্ট', icon: Sprout },
   { en: 'Premium Wall Stand', bn: 'প্রিমিয়াম ওয়াল স্ট্যান্ড', icon: Frame },
-  { en: 'Candles & Holders', bn: 'ক্যান্ডেল ও হোল্ডার', icon: Flame },
-  { en: 'Mirror & Frames', bn: 'আয়না ও ফ্রেম', icon: Sparkles },
-  { en: 'Vases & Pots', bn: 'ভেজ ও পট', icon: LayoutGrid },
-  { en: 'Gift Sets', bn: 'গিফট সেট', icon: Gift },
   { en: 'More Categories', bn: 'আরও ক্যাটাগরি', icon: Plus },
 ];
 
@@ -61,10 +57,6 @@ const CAT_ICONS = [
   { en: 'Tree Plant',  bn: 'ট্রি প্ল্যান্ট', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=200' },
   { en: 'Wall Stand',  bn: 'ওয়াল স্ট্যান্ড', image: 'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&q=80&w=200' },
   { en: 'Bouquets',    bn: 'তোড়া',          image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=80&w=200' },
-  { en: 'Candles',     bn: 'ক্যান্ডেল',     image: 'https://images.unsplash.com/photo-1608181831688-e5b8e4d66903?auto=format&fit=crop&q=80&w=200' },
-  { en: 'Frames',      bn: 'ফ্রেম',         image: 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&q=80&w=200' },
-  { en: 'Vases',       bn: 'ভেজ',           image: 'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&q=80&w=200' },
-  { en: 'Gift Sets',   bn: 'গিফট সেট',      image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?auto=format&fit=crop&q=80&w=200' },
 ];
 
 /* ── PRODUCTS ───────────────────────────────────────── */

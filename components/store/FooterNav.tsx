@@ -80,10 +80,6 @@ export default function FooterNav() {
                 { en: 'Premium Flower Tub', bn: 'প্রিমিয়াম ফ্লাওয়ার টাব', icon: Flower2, href: `/${currentLocale}/shop` },
                 { en: 'Premium Tree Plant', bn: 'প্রিমিয়াম ট্রি প্ল্যান্ট', icon: Sprout, href: `/${currentLocale}/shop` },
                 { en: 'Premium Wall Stand', bn: 'প্রিমিয়াম ওয়াল স্ট্যান্ড', icon: Frame, href: `/${currentLocale}/shop` },
-                { en: 'Candles & Holders', bn: 'ক্যান্ডেল ও হোল্ডার', icon: Flame, href: `/${currentLocale}/shop` },
-                { en: 'Mirror & Frames', bn: 'আয়না ও ফ্রেম', icon: Sparkles, href: `/${currentLocale}/shop` },
-                { en: 'Vases & Pots', bn: 'ভেজ ও পট', icon: LayoutGrid, href: `/${currentLocale}/shop` },
-                { en: 'Gift Sets', bn: 'গিফট সেট', icon: Gift, href: `/${currentLocale}/shop` },
               ].map((l, i) => {
                 const Icon = l.icon;
                 return (
