@@ -142,10 +142,6 @@ export default function FooterNav() {
                 <Mail className="h-3.5 w-3.5 text-[#057476] flex-shrink-0" />
                 <span>hello@sicilydecor.com</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Clock className="h-3.5 w-3.5 text-[#057476] flex-shrink-0" />
-                <span>{locale === 'bn' ? 'শনি–বৃহঃ, সকাল ১০টা–রাত ৮টা' : 'Sat–Thu, 10am–8pm'}</span>
-              </li>
             </ul>
           </div>
         </div>
