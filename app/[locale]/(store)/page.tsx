@@ -13,7 +13,8 @@ const SLIDES = [
     sub_en: 'Shop premium handcrafted wall stands, flower tubs & tree plants.', sub_bn: 'প্রিমিয়াম হ্যান্ডক্রাফটেড ওয়াল স্ট্যান্ড, ফ্লাওয়ার টাব ও ট্রি প্ল্যান্ট কিনুন।',
     cta_en: 'Shop Now', cta_bn: 'এখনই কিনুন',
     badge_en: 'Up to\n30% Off', badge_bn: 'সর্বোচ্চ\n৩০% ছাড়',
-    image: '/Banner1.png',
+    image_desktop: '/Banner1.png',
+    image_mobile: '/Banner1_mobile.png',
     bg: '#f0f9f9',
     accent: '#057476',
   },
@@ -23,7 +24,8 @@ const SLIDES = [
     sub_en: 'Pastel bouquets and wall art crafted for Bangladeshi homes.', sub_bn: 'বাংলাদেশি ঘরের জন্য পেস্টেল তোড়া ও ওয়াল আর্ট।',
     cta_en: 'Explore Flowers', cta_bn: 'ফুল দেখুন',
     badge_en: 'New\nCollection', badge_bn: 'নতুন\nকালেকশন',
-    image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=85&w=700',
+    image_desktop: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=85&w=700',
+    image_mobile: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=85&w=700',
     bg: '#fff5f7',
     accent: '#D80064',
   },
@@ -33,7 +35,8 @@ const SLIDES = [
     sub_en: 'Hand-polished mahogany frames with preserved dry flowers.', sub_bn: 'হাতে পালিশ করা মেহগনি ফ্রেম সহ শুকানো ফুল।',
     cta_en: 'View Collection', cta_bn: 'কালেকশন দেখুন',
     badge_en: 'Best\nSellers', badge_bn: 'বেস্ট\nসেলার',
-    image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=85&w=700',
+    image_desktop: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=85&w=700',
+    image_mobile: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=85&w=700',
     bg: '#f5f3ee',
     accent: '#78350F',
   },
@@ -93,22 +96,37 @@ function HeroSlider({ locale }: { locale: string }) {
   const s = SLIDES[active];
 
   return (
-    <div className="relative overflow-hidden rounded-2xl" style={{ height: 360 }}>
+    <div className="relative overflow-hidden rounded-2xl h-[250px] sm:h-[300px] md:h-[360px]">
 
       {/* Images */}
       {SLIDES.map((slide, i) => (
         <div
-          key={slide.tag_en}
+          key={slide.image_desktop}
           className="absolute inset-0 transition-opacity duration-800"
           style={{ opacity: active === i ? 1 : 0 }}
         >
+          {/* Desktop Banner Image */}
           <img
-            src={slide.image}
+            src={slide.image_desktop}
             alt=""
-            className="h-full w-full object-cover"
+            className="hidden md:block h-full w-full object-cover"
             style={{
               transform: active === i ? 'scale(1.0)' : 'scale(1.05)',
               transition: 'transform 6000ms ease-out',
+            }}
+          />
+          {/* Mobile Banner Image */}
+          <img
+            src={slide.image_mobile || slide.image_desktop}
+            alt=""
+            className="block md:hidden h-full w-full object-cover"
+            style={{
+              transform: active === i ? 'scale(1.0)' : 'scale(1.05)',
+              transition: 'transform 6000ms ease-out',
+            }}
+            onError={(e) => {
+              // Fallback to desktop banner if mobile file is missing / not uploaded yet
+              (e.target as HTMLImageElement).src = slide.image_desktop;
             }}
           />
         </div>
