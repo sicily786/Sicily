@@ -11,7 +11,7 @@ export default function FooterNav() {
   const pathname = usePathname();
   const { cartCount, setIsCartOpen } = useCart();
 
-  const currentLocale = pathname.split('/')[1] || 'en';
+  const currentLocale = pathname.split('/')[1] === 'en' ? 'en' : 'bn';
 
   /* ── Mobile bottom nav items ── */
   const mobileNav = [

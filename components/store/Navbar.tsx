@@ -27,7 +27,7 @@ export default function Navbar() {
   const [search, setSearch] = useState('');
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const currentLocale = pathname.split('/')[1] || 'en';
+  const currentLocale = pathname.split('/')[1] === 'en' ? 'en' : 'bn';
 
   const toggleLanguage = () => {
     const segments = pathname.split('/');
