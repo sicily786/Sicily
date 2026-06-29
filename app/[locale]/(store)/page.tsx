@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { ArrowRight, Star, Heart, ShieldCheck, Truck, RefreshCw, Headphones, ChevronRight } from 'lucide-react';
+import { ArrowRight, Star, Heart, ShieldCheck, Truck, RefreshCw, Headphones, ChevronRight, Crown, Flower2, Sprout, Frame, Flame, Sparkles, LayoutGrid, Gift, Plus } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 
@@ -44,15 +44,15 @@ const SLIDES = [
 
 /* ── SIDEBAR CATEGORIES ────────────────────────────── */
 const SIDEBAR_CATS = [
-  { en: 'All Categories', bn: 'সব ক্যাটাগরি', icon: '👑' },
-  { en: 'Premium Flower Tub', bn: 'প্রিমিয়াম ফ্লাওয়ার টাব', icon: '🌺' },
-  { en: 'Premium Tree Plant', bn: 'প্রিমিয়াম ট্রি প্ল্যান্ট', icon: '🌳' },
-  { en: 'Premium Wall Stand', bn: 'প্রিমিয়াম ওয়াল স্ট্যান্ড', icon: '🖼️' },
-  { en: 'Candles & Holders', bn: 'ক্যান্ডেল ও হোল্ডার', icon: '🕯️' },
-  { en: 'Mirror & Frames', bn: 'আয়না ও ফ্রেম', icon: '🪞' },
-  { en: 'Vases & Pots', bn: 'ভেজ ও পট', icon: '🪴' },
-  { en: 'Gift Sets', bn: 'গিফট সেট', icon: '🎁' },
-  { en: 'More Categories', bn: 'আরও ক্যাটাগরি', icon: '➕' },
+  { en: 'All Categories', bn: 'সব ক্যাটাগরি', icon: Crown },
+  { en: 'Premium Flower Tub', bn: 'প্রিমিয়াম ফ্লাওয়ার টাব', icon: Flower2 },
+  { en: 'Premium Tree Plant', bn: 'প্রিমিয়াম ট্রি প্ল্যান্ট', icon: Sprout },
+  { en: 'Premium Wall Stand', bn: 'প্রিমিয়াম ওয়াল স্ট্যান্ড', icon: Frame },
+  { en: 'Candles & Holders', bn: 'ক্যান্ডেল ও হোল্ডার', icon: Flame },
+  { en: 'Mirror & Frames', bn: 'আয়না ও ফ্রেম', icon: Sparkles },
+  { en: 'Vases & Pots', bn: 'ভেজ ও পট', icon: LayoutGrid },
+  { en: 'Gift Sets', bn: 'গিফট সেট', icon: Gift },
+  { en: 'More Categories', bn: 'আরও ক্যাটাগরি', icon: Plus },
 ];
 
 /* ── CATEGORY ICONS ROW ────────────────────────────── */
@@ -245,7 +245,7 @@ export default function HomePage() {
                         : 'text-gray-600 hover:bg-gray-50 hover:text-[#057476]'
                     }`}
                   >
-                    <span className="text-base w-5 text-center flex-shrink-0">{cat.icon}</span>
+                    <cat.icon className="h-4 w-4 flex-shrink-0 text-gray-500 group-hover:text-[#057476]" />
                     <span className="flex-1 leading-tight">{locale === 'bn' ? cat.bn : cat.en}</span>
                     <ChevronRight className="h-3 w-3 opacity-30 group-hover:opacity-70 flex-shrink-0" />
                   </button>
