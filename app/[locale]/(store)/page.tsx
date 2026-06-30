@@ -68,7 +68,7 @@ function HeroSlider({ locale }: { locale: string }) {
   }, []);
 
   return (
-    <div className="relative overflow-hidden rounded-3xl h-[220px] sm:h-[300px] md:h-[340px] shadow-sm">
+    <div className="relative overflow-hidden rounded-none sm:rounded-3xl h-[220px] sm:h-[300px] md:h-[340px] shadow-sm">
       {/* Background gradients */}
       {SLIDES.map((slide, i) => (
         <div
@@ -211,7 +211,7 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           1. HERO AREA: Banner slider
       ══════════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
+      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 pt-0 sm:pt-4">
         <HeroSlider locale={locale} />
       </div>
 
