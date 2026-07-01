@@ -28,6 +28,9 @@ export default function FooterNav() {
           DESKTOP FOOTER (Also visible on Mobile)
       ════════════════════════════════════════════ */}
       <footer className="bg-[#14201D] text-[#F2EDE3] mt-0 mb-16 md:mb-0">
+        {/* Top accent stripe */}
+        <div className="h-1 w-full bg-gradient-to-r from-brand-secondary via-[#C6A15B] to-brand-primary" />
+
         {/* Top section */}
         <div className="max-w-7xl mx-auto px-6 lg:px-8 pt-14 pb-10 grid grid-cols-1 md:grid-cols-4 gap-10">
 
@@ -71,8 +74,9 @@ export default function FooterNav() {
 
           {/* Quick links */}
           <div className="space-y-4">
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F2EDE3]/40">
+            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F2EDE3]/40 relative pb-2.5">
               {locale === 'bn' ? 'ক্যাটাগরি' : 'Categories'}
+              <span className="absolute left-0 bottom-0 h-px w-6 bg-[#C6A15B]" />
             </h4>
             <ul className="space-y-2.5">
               {[
@@ -84,7 +88,7 @@ export default function FooterNav() {
                 const Icon = l.icon;
                 return (
                   <li key={i}>
-                    <Link href={l.href} className="text-xs text-[#F2EDE3]/55 hover:text-[#C6A15B] transition-colors duration-200 flex items-center gap-2">
+                    <Link href={l.href} className="text-xs text-[#F2EDE3]/55 hover:text-[#FF3D9A] transition-colors duration-200 flex items-center gap-2">
                       <Icon className="h-3.5 w-3.5 text-[#C6A15B]/70" strokeWidth={1.75} />
                       <span>{locale === 'bn' ? l.bn : l.en}</span>
                     </Link>
@@ -96,8 +100,9 @@ export default function FooterNav() {
 
           {/* Info links */}
           <div className="space-y-4">
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F2EDE3]/40">
+            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F2EDE3]/40 relative pb-2.5">
               {locale === 'bn' ? 'তথ্য' : 'Information'}
+              <span className="absolute left-0 bottom-0 h-px w-6 bg-[#C6A15B]" />
             </h4>
             <ul className="space-y-2.5">
               {[
@@ -110,7 +115,7 @@ export default function FooterNav() {
                 const Icon = l.icon;
                 return (
                   <li key={i}>
-                    <Link href="#" className="text-xs text-[#F2EDE3]/55 hover:text-[#C6A15B] transition-colors duration-200 flex items-center gap-2">
+                    <Link href="#" className="text-xs text-[#F2EDE3]/55 hover:text-[#FF3D9A] transition-colors duration-200 flex items-center gap-2">
                       <Icon className="h-3.5 w-3.5 text-[#C6A15B]/70 flex-shrink-0" strokeWidth={1.75} />
                       <span>{locale === 'bn' ? l.bn : l.en}</span>
                     </Link>
@@ -122,20 +127,27 @@ export default function FooterNav() {
 
           {/* Contact & info */}
           <div className="space-y-5">
-            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F2EDE3]/40">
+            <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-[#F2EDE3]/40 relative pb-2.5">
               {locale === 'bn' ? 'যোগাযোগ' : 'Contact'}
+              <span className="absolute left-0 bottom-0 h-px w-6 bg-[#C6A15B]" />
             </h4>
-            <ul className="space-y-2.5 text-xs text-[#F2EDE3]/55">
-              <li className="flex items-center gap-2">
-                <MapPin className="h-3.5 w-3.5 text-[#C6A15B]/70 flex-shrink-0" strokeWidth={1.75} />
+            <ul className="space-y-3 text-xs text-[#F2EDE3]/55">
+              <li className="flex items-center gap-2.5">
+                <span className="h-7 w-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                  <MapPin className="h-3.5 w-3.5 text-[#C6A15B]" strokeWidth={1.75} />
+                </span>
                 <span>{locale === 'bn' ? 'ঢাকা, বাংলাদেশ' : 'Dhaka, Bangladesh'}</span>
               </li>
-              <li className="flex items-center gap-2">
-                <PhoneCall className="h-3.5 w-3.5 text-[#C6A15B]/70 flex-shrink-0" strokeWidth={1.75} />
+              <li className="flex items-center gap-2.5">
+                <span className="h-7 w-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                  <PhoneCall className="h-3.5 w-3.5 text-[#C6A15B]" strokeWidth={1.75} />
+                </span>
                 <span>+880 17XX-XXXXXX</span>
               </li>
-              <li className="flex items-center gap-2">
-                <Mail className="h-3.5 w-3.5 text-[#C6A15B]/70 flex-shrink-0" strokeWidth={1.75} />
+              <li className="flex items-center gap-2.5">
+                <span className="h-7 w-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                  <Mail className="h-3.5 w-3.5 text-[#C6A15B]" strokeWidth={1.75} />
+                </span>
                 <span>hello@sicilydecor.com</span>
               </li>
             </ul>
