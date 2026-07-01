@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { Heart, Menu, X, Search, Crown, Flower2, Sprout, Frame } from 'lucide-react';
+import { Heart, X, Search, Crown, Flower2, Sprout, Frame } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 
@@ -39,13 +39,21 @@ export default function Navbar() {
           {/* Header Row: Hamburger (left) | Logo (center) | Wishlist (right) */}
           <div className="grid grid-cols-3 items-center gap-4">
 
-            {/* Left: Hamburger Menu Trigger */}
+            {/* Left: Hamburger Menu Trigger (staggered bars) */}
             <div className="flex items-center justify-start">
               <button
                 onClick={() => setMenuOpen(o => !o)}
-                className="h-10 w-10 flex items-center justify-center rounded-full border border-brand-border text-brand-text hover:border-[#C6A15B] hover:text-[#C6A15B] hover:bg-brand-surface active:scale-95 focus:outline-none transition-all duration-200"
+                className="p-2 -ml-2 flex items-center justify-center text-brand-text hover:text-[#C6A15B] active:scale-95 focus:outline-none transition-all duration-200"
               >
-                {menuOpen ? <X className="h-5 w-5" strokeWidth={1.75} /> : <Menu className="h-5 w-5" strokeWidth={1.75} />}
+                {menuOpen ? (
+                  <X className="h-6 w-6" strokeWidth={1.75} />
+                ) : (
+                  <span className="flex flex-col items-start gap-[5px]">
+                    <span className="h-[2px] w-6 rounded-full bg-current" />
+                    <span className="h-[2px] w-4 rounded-full bg-current" />
+                    <span className="h-[2px] w-5 rounded-full bg-current" />
+                  </span>
+                )}
               </button>
             </div>
 
