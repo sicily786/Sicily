@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { ArrowRight, Star, Heart, ShieldCheck, Truck, RefreshCw, Headphones, Crown, Flower2, Sprout, Frame, Timer, Sparkles, ShoppingCart, Percent, Gift } from 'lucide-react';
+import { ArrowRight, Star, Heart, Crown, Flower2, Sprout, Frame, Timer, Sparkles, ShoppingCart, Percent, Gift } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 
@@ -213,35 +213,14 @@ export default function HomePage() {
       {/* ══════════════════════════════════════════
           1. HERO AREA: Banner slider
       ══════════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 pt-0 sm:pt-4">
+      <div className="max-w-7xl mx-auto px-0 sm:px-6 lg:px-8">
         <HeroSlider locale={locale} />
       </div>
 
       {/* ══════════════════════════════════════════
-          2. TRUST STRIP
+          2. SHOP BY CATEGORY — Icon row with scroll
       ══════════════════════════════════════════ */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5 mb-8">
-        <div className="bg-white rounded-xl border border-brand-border py-3 px-2 sm:px-5">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:divide-x md:divide-brand-border">
-            {[
-              { icon: <ShieldCheck className="h-5 w-5 text-brand-primary" strokeWidth={1.6} />, t_en: 'Secure Payment', t_bn: 'নিরাপদ পেমেন্ট' },
-              { icon: <Truck className="h-5 w-5 text-brand-primary" strokeWidth={1.6} />, t_en: 'Fast & Free Delivery', t_bn: 'ফ্রি ও দ্রুত ডেলিভারি' },
-              { icon: <RefreshCw className="h-5 w-5 text-brand-primary" strokeWidth={1.6} />, t_en: 'Easy Returns', t_bn: 'সহজ রিটার্ন পলিসি' },
-              { icon: <Headphones className="h-5 w-5 text-brand-primary" strokeWidth={1.6} />, t_en: '24/7 Support', t_bn: '২৪/৭ কাস্টমার সাপোর্ট' },
-            ].map((t, i) => (
-              <div key={i} className="flex items-center gap-2.5 justify-center md:px-5">
-                <div className="flex-shrink-0">{t.icon}</div>
-                <span className="text-[10px] sm:text-xs font-semibold text-brand-muted">{locale === 'bn' ? t.t_bn : t.t_en}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* ══════════════════════════════════════════
-          3. SHOP BY CATEGORY — Icon row with scroll
-      ══════════════════════════════════════════ */}
-      <section id="categories" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+      <section id="categories" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-5 mb-8">
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-serif text-base sm:text-lg font-semibold text-brand-text tracking-tight">
             {locale === 'bn' ? 'ক্যাটাগরি অনুযায়ী শপ করুন' : 'Shop by Category'}

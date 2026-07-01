@@ -10,7 +10,7 @@ export default function StoreLayout({
   return (
     <>
       <Navbar />
-      <main className="flex-1 w-full max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 py-4 sm:py-8 mb-16 md:mb-0">
+      <main className="flex-1 w-full max-w-7xl mx-auto px-0 sm:px-6 lg:px-8 pt-0 pb-4 sm:pb-8 mb-16 md:mb-0">
         {children}
       </main>
       <FooterNav />
