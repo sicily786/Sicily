@@ -5,32 +5,11 @@ import { ArrowRight, Star, Heart, Crown, Flower2, Sprout, Frame, Timer, Sparkles
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 
-/* ── BANNER SLIDES ─────────────────────────────────── */
+/* ── BANNER SLIDES (image-only — all copy/CTA lives inside the banner artwork) ── */
 const SLIDES = [
-  {
-    tag_en: 'SUMMER COLLECTION', tag_bn: 'সামার কালেকশন',
-    title_en: 'Up to 50% Off', title_bn: 'সর্বোচ্চ ৫০% ছাড়',
-    sub_en: 'Curated deals on our finest premium pieces', sub_bn: 'সবচেয়ে জনপ্রিয় প্রিমিয়াম পণ্যের ওপর সেরা অফার',
-    cta_en: 'Shop the Edit', cta_bn: 'এখনই কিনুন',
-    image: '/Banner1.png',
-    bg: 'from-[#0B5D5C] via-[#0A4443] to-[#14201D]',
-  },
-  {
-    tag_en: 'NEW ARRIVALS', tag_bn: 'নতুন কালেকশন',
-    title_en: 'Floral Stands', title_bn: 'ফ্লাওয়ার স্ট্যান্ড',
-    sub_en: 'Preserved dry flowers & handcrafted mahogany frames', sub_bn: 'হাতে তৈরি মেহগনি ফ্রেম ও ফুলের শোপিস',
-    cta_en: 'Explore Now', cta_bn: 'সব দেখুন',
-    image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=85&w=700',
-    bg: 'from-[#5C1730] via-[#421021] to-[#14201D]',
-  },
-  {
-    tag_en: 'EXCLUSIVE OFFER', tag_bn: 'বিশেষ অফার',
-    title_en: 'Premium Planters', title_bn: 'প্রিমিয়াম প্ল্যান্টার',
-    sub_en: 'Ceramic & metal pots crafted for indoor living', sub_bn: 'ইনডোর গাছের জন্য মেটাল ও সিরামিক পট',
-    cta_en: 'View Deals', cta_bn: 'অফার দেখুন',
-    image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=85&w=700',
-    bg: 'from-[#14201D] via-[#1B2925] to-[#0B5D5C]',
-  },
+  { image: '/Banner1.png', alt_en: 'Summer Collection — Up to 50% Off', alt_bn: 'সামার কালেকশন — সর্বোচ্চ ৫০% ছাড়' },
+  { image: 'https://images.unsplash.com/photo-1561181286-d3fee7d55364?auto=format&fit=crop&q=85&w=1200', alt_en: 'New Arrivals — Floral Stands', alt_bn: 'নতুন কালেকশন — ফ্লাওয়ার স্ট্যান্ড' },
+  { image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=85&w=1200', alt_en: 'Exclusive Offer — Premium Planters', alt_bn: 'বিশেষ অফার — প্রিমিয়াম প্ল্যান্টার' },
 ];
 
 /* ── SHOP BY CATEGORIES DATA ── */
@@ -69,52 +48,15 @@ function HeroSlider({ locale }: { locale: string }) {
 
   return (
     <div className="relative overflow-hidden rounded-none sm:rounded-2xl h-[240px] sm:h-[320px] md:h-[360px] shadow-sm">
-      {/* Background gradients */}
+      {/* Full-bleed slide images — no text/CTA overlay, banner artwork carries the copy */}
       {SLIDES.map((slide, i) => (
-        <div
+        <img
           key={i}
-          className={`absolute inset-0 bg-gradient-to-br ${slide.bg} transition-opacity duration-800 flex items-center justify-between px-6 sm:px-12 md:px-16`}
+          src={slide.image}
+          alt={locale === 'bn' ? slide.alt_bn : slide.alt_en}
+          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-800"
           style={{ opacity: active === i ? 1 : 0 }}
-        >
-          {/* Fine hairline border accent */}
-          <div className="absolute inset-3 border border-white/10 rounded-xl pointer-events-none hidden sm:block" />
-
-          {/* Left Text details */}
-          <div className="space-y-3 sm:space-y-4 z-10 max-w-[62%] text-left text-white" style={{ animation: active === i ? 'fadeSlideUp 0.5s ease-out both' : '' }}>
-            <span className="inline-flex items-center gap-2 text-[9px] sm:text-[11px] font-semibold tracking-[0.25em] text-[#C6A15B] uppercase">
-              <span className="h-px w-4 bg-[#C6A15B]" />
-              {locale === 'bn' ? slide.tag_bn : slide.tag_en}
-            </span>
-            <h2 className="font-serif text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight leading-[1.1]">
-              {locale === 'bn' ? slide.title_bn : slide.title_en}
-            </h2>
-            <p className="text-[11px] sm:text-xs text-white/60 font-medium leading-relaxed max-w-sm hidden sm:block">
-              {locale === 'bn' ? slide.sub_bn : slide.sub_en}
-            </p>
-            <div className="pt-1.5">
-              <Link
-                href={`/${locale}/shop`}
-                className="inline-flex items-center gap-2 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full border border-[#C6A15B] text-[#C6A15B] font-semibold text-[10px] sm:text-xs uppercase tracking-widest hover:bg-[#C6A15B] hover:text-[#14201D] transition-all duration-300"
-              >
-                <span>{locale === 'bn' ? slide.cta_bn : slide.cta_en}</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Right product visual */}
-          <div className="relative h-full w-[38%] flex items-center justify-center select-none">
-            <div className="relative w-32 h-32 sm:w-44 sm:h-44 md:w-52 md:h-52">
-              <div className="absolute inset-0 rounded-full bg-[#C6A15B]/10 blur-2xl" />
-              <img
-                src={slide.image}
-                alt=""
-                className="h-full w-full object-contain relative z-10 drop-shadow-2xl transition-transform duration-[6000ms]"
-                style={{ transform: active === i ? 'scale(1.02)' : 'scale(0.96)' }}
-              />
-            </div>
-          </div>
-        </div>
+        />
       ))}
 
       {/* Pagination Dot Indicators (Bottom center) */}
@@ -126,7 +68,7 @@ function HeroSlider({ locale }: { locale: string }) {
             className="h-1 rounded-full transition-all duration-300"
             style={{
               width: active === i ? 22 : 6,
-              background: active === i ? '#C6A15B' : 'rgba(255,255,255,0.35)',
+              background: active === i ? '#C6A15B' : 'rgba(255,255,255,0.6)',
             }}
           />
         ))}
