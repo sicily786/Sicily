@@ -2,15 +2,13 @@
 
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { ShoppingCart, Heart } from 'lucide-react';
+import { Heart } from 'lucide-react';
 import Link from 'next/link';
-import { useCart } from '@/lib/cart';
 import CartDrawer from '@/components/store/CartDrawer';
 
 export default function Navbar() {
   const locale = useLocale();
   const pathname = usePathname();
-  const { cartCount, setIsCartOpen } = useCart();
 
   const currentLocale = pathname.split('/')[1] === 'en' ? 'en' : 'bn';
 
@@ -38,9 +36,8 @@ export default function Navbar() {
               </div>
             </Link>
 
-            {/* Right: Wishlist & Cart Actions */}
+            {/* Right: Wishlist Action */}
             <div className="flex items-center gap-1">
-              {/* Wishlist Link */}
               <Link
                 href={`/${currentLocale}/shop`}
                 className="p-2 rounded-lg text-brand-muted hover:text-brand-secondary hover:bg-brand-surface transition-all duration-200 relative"
@@ -48,20 +45,6 @@ export default function Navbar() {
               >
                 <Heart className="h-5 w-5" strokeWidth={1.75} />
               </Link>
-
-              {/* Shopping Cart Drawer Trigger */}
-              <button
-                onClick={() => setIsCartOpen(true)}
-                className="p-2 rounded-lg text-brand-muted hover:text-brand-primary hover:bg-brand-surface transition-all duration-200 relative"
-                title="Cart"
-              >
-                <ShoppingCart className="h-5 w-5" strokeWidth={1.75} />
-                {cartCount > 0 && (
-                  <span className="absolute top-0.5 right-0.5 bg-[#C6A15B] text-[#14201D] text-[9px] font-black h-4 w-4 rounded-full flex items-center justify-center border border-white">
-                    {cartCount}
-                  </span>
-                )}
-              </button>
             </div>
           </div>
 

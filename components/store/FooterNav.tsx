@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { Home, ShoppingBag, Crown, Flower2, Sprout, Frame, LayoutGrid, Info, Truck, RefreshCw, ShieldAlert, Phone, MapPin, PhoneCall, Mail, User, Package } from 'lucide-react';
+import { Home, ShoppingCart, Crown, Flower2, Sprout, Frame, LayoutGrid, Info, Truck, RefreshCw, ShieldAlert, Phone, MapPin, PhoneCall, Mail, User, Package } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 
@@ -17,7 +17,7 @@ export default function FooterNav() {
   const mobileNav = [
     { label_en: 'Home',       label_bn: 'হোম',        icon: Home,         href: `/${currentLocale}` },
     { label_en: 'Shop',       label_bn: 'শপ',         icon: LayoutGrid,   href: `/${currentLocale}/shop` },
-    { label_en: 'Deals',      label_bn: 'ডিলস',       icon: ShoppingBag,  href: `/${currentLocale}/shop` },
+    { label_en: 'Cart',       label_bn: 'কার্ট',       icon: ShoppingCart, action: 'cart' as const },
     { label_en: 'Orders',     label_bn: 'অর্ডারসমূহ',  icon: Package,      href: `/${currentLocale}/admin/orders` },
     { label_en: 'Account',    label_bn: 'প্রোফাইল',     icon: User,         href: `/${currentLocale}/account` },
   ];
@@ -165,12 +165,30 @@ export default function FooterNav() {
           {mobileNav.map((item, i) => {
             const Icon = item.icon;
             const label = locale === 'bn' ? item.label_bn : item.label_en;
-            const isActive = pathname === item.href;
 
+            if (item.action === 'cart') {
+              return (
+                <button
+                  key={i}
+                  onClick={() => setIsCartOpen(true)}
+                  className="relative flex flex-col items-center justify-center flex-1 gap-1 text-brand-muted hover:text-brand-primary transition-colors duration-200"
+                >
+                  <Icon className="h-5 w-5 stroke-[1.6]" />
+                  {cartCount > 0 && (
+                    <span className="absolute top-0 right-1/2 translate-x-3 bg-[#C6A15B] text-[#14201D] text-[8px] font-black h-3.5 w-3.5 rounded-full flex items-center justify-center">
+                      {cartCount}
+                    </span>
+                  )}
+                  <span className="text-[9px] font-bold">{label}</span>
+                </button>
+              );
+            }
+
+            const isActive = pathname === item.href;
             return (
               <Link
                 key={i}
-                href={item.href}
+                href={item.href!}
                 className={`flex flex-col items-center justify-center flex-1 gap-1 transition-colors duration-200 ${isActive ? 'text-brand-primary' : 'text-brand-muted hover:text-brand-primary'}`}
               >
                 <Icon className={`h-5 w-5 ${isActive ? 'stroke-[2.2]' : 'stroke-[1.6]'}`} />
