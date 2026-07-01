@@ -155,39 +155,38 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
       </div>
 
       {/* Product Details Section */}
-      <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2">
+      <div className="p-3.5 flex-1 flex flex-col justify-between space-y-2.5">
         <div>
           <h3 className="text-xs sm:text-sm font-semibold text-brand-text leading-snug line-clamp-2 hover:text-brand-primary transition-colors">
             <Link href={`/${locale}/p/${p.id}`}>{name}</Link>
           </h3>
 
           {/* Available sizes (display only) */}
-          <div className="flex items-center flex-wrap gap-1.5 mt-2">
+          <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
             {p.sizes.map((size) => (
               <span key={size} className="text-[10px] font-semibold text-brand-muted">
                 {size}
               </span>
             ))}
           </div>
-        </div>
 
-        {/* Price & Cart button row */}
-        <div className="flex items-center justify-between gap-1 pt-1.5 border-t border-brand-border/70">
-          <div className="pt-1.5 flex items-baseline gap-1.5">
+          {/* Price — moved up right below sizes */}
+          <div className="flex items-baseline gap-1.5 mt-1.5">
             <span className="text-sm sm:text-base font-bold text-brand-secondary">৳{price}</span>
             {p.sale_price && (
               <span className="text-[10px] text-brand-muted line-through">৳{p.price}</span>
             )}
           </div>
-
-          {/* Circular Shopping Cart Button */}
-          <Link
-            href={`/${locale}/p/${p.id}`}
-            className="h-9 w-9 rounded-full bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white shadow-sm flex items-center justify-center hover:-translate-y-0.5 hover:shadow-lg hover:shadow-brand-primary/30 hover:scale-105 transition-all duration-200 flex-shrink-0 mt-1.5"
-          >
-            <ShoppingCart className="h-4 w-4" strokeWidth={1.75} />
-          </Link>
         </div>
+
+        {/* Add to Cart Button (full-width, with Bangla label) */}
+        <Link
+          href={`/${locale}/p/${p.id}`}
+          className="w-full flex items-center justify-center gap-1.5 py-2 rounded-full bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white text-[11px] font-bold shadow-sm hover:shadow-lg hover:shadow-brand-primary/30 hover:-translate-y-0.5 transition-all duration-200"
+        >
+          <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
+          <span>{locale === 'bn' ? 'কার্টে যোগ করুন' : 'Add to Cart'}</span>
+        </Link>
       </div>
     </div>
   );
