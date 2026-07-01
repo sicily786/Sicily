@@ -14,7 +14,7 @@ const SLIDES = [
 
 /* ── SHOP BY CATEGORIES DATA ── */
 const CAT_ICONS = [
-  { en: 'All Categories', bn: 'সব ক্যাটাগরি', icon: Crown, bg: 'bg-brand-surface text-[#C6A15B]' },
+  { en: 'All Categories', bn: 'সব ক্যাটাগরি', icon: Crown, bg: 'bg-brand-surface text-brand-secondary' },
   { en: 'Flower Tub',  bn: 'ফ্লাওয়ার টাব',  icon: Flower2, bg: 'bg-brand-surface text-brand-secondary' },
   { en: 'Tree Plant',  bn: 'ট্রি প্ল্যান্ট', icon: Sprout, bg: 'bg-brand-surface text-brand-primary' },
   { en: 'Wall Stand',  bn: 'ওয়াল স্ট্যান্ড', icon: Frame, bg: 'bg-brand-surface text-[#8A6A2E]' },
@@ -68,7 +68,7 @@ function HeroSlider({ locale }: { locale: string }) {
             className="h-1 rounded-full transition-all duration-300"
             style={{
               width: active === i ? 22 : 6,
-              background: active === i ? '#C6A15B' : 'rgba(255,255,255,0.6)',
+              background: active === i ? '#7D1F3D' : 'rgba(255,255,255,0.6)',
             }}
           />
         ))}
@@ -214,7 +214,7 @@ export default function HomePage() {
           <h2 className="font-serif text-base sm:text-lg font-semibold text-brand-text tracking-tight">
             {locale === 'bn' ? 'ক্যাটাগরি অনুযায়ী শপ করুন' : 'Shop by Category'}
           </h2>
-          <Link href={`/${locale}/shop`} className="text-[11px] font-semibold text-brand-primary hover:text-[#C6A15B] transition-colors uppercase tracking-wide">
+          <Link href={`/${locale}/shop`} className="text-[11px] font-semibold text-brand-primary hover:text-brand-secondary transition-colors uppercase tracking-wide">
             {locale === 'bn' ? 'সব দেখুন' : 'View all'}
           </Link>
         </div>
@@ -254,7 +254,7 @@ export default function HomePage() {
               <FlashCountdown locale={locale} />
             </div>
 
-            <Link href={`/${locale}/shop`} className="text-[11px] font-semibold text-brand-primary hover:text-[#C6A15B] transition-colors uppercase tracking-wide self-start sm:self-auto">
+            <Link href={`/${locale}/shop`} className="text-[11px] font-semibold text-brand-primary hover:text-brand-secondary transition-colors uppercase tracking-wide self-start sm:self-auto">
               {locale === 'bn' ? 'সব দেখুন' : 'View all'}
             </Link>
           </div>
@@ -270,8 +270,8 @@ export default function HomePage() {
       ══════════════════════════════════════════ */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-        {/* Left card Promo */}
-        <div className="relative rounded-xl p-6 overflow-hidden bg-[#0B5D5C] text-white flex flex-col justify-between min-h-[120px] border border-white/10">
+        {/* Left card Promo — wine-toned signature card */}
+        <div className="relative rounded-xl p-6 overflow-hidden bg-gradient-to-br from-brand-secondary to-brand-secondary-dark text-white flex flex-col justify-between min-h-[120px] border border-white/10">
           <div className="absolute right-4 bottom-2 opacity-10">
             <Percent className="h-20 w-20" />
           </div>
@@ -280,7 +280,7 @@ export default function HomePage() {
             <p className="text-[10px] text-white/60 font-medium">{locale === 'bn' ? 'আপনার প্রথম অর্ডারে পাবেন' : 'Applicable on your first order'}</p>
           </div>
           <div className="pt-3">
-            <span className="inline-block border border-[#C6A15B]/50 text-[#C6A15B] px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider">
+            <span className="inline-block border border-[#C6A15B]/60 text-[#C6A15B] px-3 py-1 rounded-full text-[10px] font-mono font-bold tracking-wider">
               {locale === 'bn' ? 'কোড: WELCOME10' : 'Use Code: WELCOME10'}
             </span>
           </div>
@@ -312,7 +312,7 @@ export default function HomePage() {
           <h2 className="font-serif text-base sm:text-lg font-semibold text-brand-text tracking-tight">
             {locale === 'bn' ? 'ফিচার্ড প্রোডাক্টস' : 'Featured Products'}
           </h2>
-          <Link href={`/${locale}/shop`} className="text-[11px] font-semibold text-brand-primary hover:text-[#C6A15B] transition-colors uppercase tracking-wide">
+          <Link href={`/${locale}/shop`} className="text-[11px] font-semibold text-brand-primary hover:text-brand-secondary transition-colors uppercase tracking-wide">
             {locale === 'bn' ? 'সব দেখুন' : 'View all'}
           </Link>
         </div>
