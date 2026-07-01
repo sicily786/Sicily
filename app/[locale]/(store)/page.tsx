@@ -1,7 +1,7 @@
 'use client';
 
 import { useLocale } from 'next-intl';
-import { ArrowRight, Star, Heart, Crown, Flower2, Sprout, Frame, Sparkles, ShoppingCart, Percent, Gift } from 'lucide-react';
+import { ArrowRight, Heart, Crown, Flower2, Sprout, Frame, Sparkles, ShoppingCart, Percent, Gift } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useEffect, useRef } from 'react';
 
@@ -118,7 +118,6 @@ function FlashCountdown({ locale }: { locale: string }) {
 /* ── PRODUCT CARD ───────────────────────────────────── */
 function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
   const [liked, setLiked] = useState(false);
-  const [selectedSize, setSelectedSize] = useState(p.sizes[0]);
   const name = locale === 'bn' ? p.name_bn : p.name_en;
   const price = p.sale_price ?? p.price;
 
@@ -162,37 +161,22 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
             <Link href={`/${locale}/p/${p.id}`}>{name}</Link>
           </h3>
 
-          {/* Star rating */}
-          <div className="flex items-center gap-0.5 text-[#C6A15B] mt-1.5">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} className={`h-2.5 w-2.5 ${i < Math.round(p.rating) ? 'fill-current' : 'fill-none text-brand-border'}`} strokeWidth={1.5} />
-            ))}
-          </div>
-
-          {/* Available sizes */}
-          <div className="flex items-center flex-wrap gap-1 mt-2">
+          {/* Available sizes (display only) */}
+          <div className="flex items-center flex-wrap gap-1.5 mt-2">
             {p.sizes.map((size) => (
-              <button
-                key={size}
-                onClick={(e) => { e.preventDefault(); setSelectedSize(size); }}
-                className={`px-2 py-0.5 rounded-md text-[9px] font-bold border transition-all duration-150 ${
-                  selectedSize === size
-                    ? 'bg-brand-primary border-brand-primary text-white'
-                    : 'bg-white border-brand-border text-brand-muted hover:border-brand-primary/40'
-                }`}
-              >
+              <span key={size} className="text-[10px] font-semibold text-brand-muted">
                 {size}
-              </button>
+              </span>
             ))}
           </div>
         </div>
 
         {/* Price & Cart button row */}
         <div className="flex items-center justify-between gap-1 pt-1.5 border-t border-brand-border/70">
-          <div className="pt-1.5">
-            <span className="text-sm sm:text-base font-bold text-brand-secondary block">৳{price}</span>
+          <div className="pt-1.5 flex items-baseline gap-1.5">
+            <span className="text-sm sm:text-base font-bold text-brand-secondary">৳{price}</span>
             {p.sale_price && (
-              <span className="text-[10px] text-brand-muted line-through block mt-0.5">৳{p.price}</span>
+              <span className="text-[10px] text-brand-muted line-through">৳{p.price}</span>
             )}
           </div>
 
