@@ -292,20 +292,20 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
                 </span>
               )}
               {stockCount <= 5 && (
-                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-red-500 uppercase tracking-wider animate-pulse">
-                  {locale === 'bn' ? `মাত্র ${stockCount}টি বাকি আছে! 🔥` : `Only ${stockCount} left! 🔥`}
+                <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold text-white bg-gradient-to-r from-brand-secondary to-brand-secondary-dark uppercase tracking-wider">
+                  {locale === 'bn' ? `${stockCount}টি বাকি` : `Only ${stockCount} left`}
                 </span>
               )}
             </div>
 
-            <h1 className="text-2xl md:text-4xl font-extrabold text-brand-text leading-tight pt-1">
+            <h1 className="font-serif text-2xl md:text-4xl font-semibold text-brand-text leading-tight pt-1">
               {nameLabel}
             </h1>
-            
+
             <div className="flex items-center gap-2 pt-1">
-              <div className="flex items-center text-yellow-400">
+              <div className="flex items-center text-[#C6A15B]">
                 {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-current" />
+                  <Star key={i} className="h-4 w-4 fill-current" strokeWidth={1.5} />
                 ))}
               </div>
               <span className="text-xs font-bold text-brand-text">{product.rating}</span>
@@ -327,7 +327,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
           {/* Description */}
           <div className="space-y-2">
-            <h3 className="font-bold text-sm text-brand-text">
+            <h3 className="font-serif font-semibold text-sm text-brand-text">
               {locale === 'bn' ? 'পণ্য বিবরণী' : 'Product Description'}
             </h3>
             <p className="text-xs md:text-sm text-brand-muted leading-relaxed">
@@ -409,11 +409,11 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               </div>
 
               {/* Order Scroll CTA */}
-              <button 
+              <button
                 onClick={scrollToForm}
-                className="flex-1 py-3.5 px-6 rounded-2xl bg-brand-primary text-white font-extrabold hover:bg-brand-primary-alt shadow-lg shadow-brand-primary/25 transition-all-custom text-sm text-center"
+                className="flex-1 py-3.5 px-6 rounded-lg bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white font-bold hover:shadow-lg hover:shadow-brand-primary/25 shadow-sm transition-all-custom text-sm text-center"
               >
-                {locale === 'bn' ? 'সরাসরি এখনই অর্ডার করুন 🛒' : 'Order Directly Now 🛒'}
+                {locale === 'bn' ? 'সরাসরি এখনই অর্ডার করুন' : 'Order Directly Now'}
               </button>
             </div>
           </div>
@@ -421,26 +421,26 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       </div>
 
       {/* Product Benefits Section */}
-      <div className="bg-brand-surface border border-brand-border rounded-3xl p-6 md:p-8 space-y-6">
-        <h3 className="font-extrabold text-brand-text text-base border-b border-brand-border pb-3 flex items-center gap-2">
-          <ClipboardCheck className="h-5 w-5 text-brand-primary" />
-          <span>{locale === 'bn' ? 'এই প্রোডাক্টের চমৎকার সুবিধাসমূহ:' : 'Premium Product Features:'}</span>
+      <div className="bg-brand-surface border border-brand-border rounded-2xl p-6 md:p-8 space-y-6">
+        <h3 className="font-serif font-semibold text-brand-text text-base border-b border-brand-border pb-3 flex items-center gap-2">
+          <ClipboardCheck className="h-5 w-5 text-brand-primary" strokeWidth={1.75} />
+          <span>{locale === 'bn' ? 'এই প্রোডাক্টের চমৎকার সুবিধাসমূহ' : 'Premium Product Features'}</span>
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs md:text-sm font-semibold text-brand-text">
           <div className="flex items-start gap-2.5">
-            <Check className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+            <Check className="h-5 w-5 text-brand-primary flex-shrink-0 mt-0.5" strokeWidth={1.75} />
             <p className="leading-relaxed">
               {locale === 'bn' ? '১০০% মরিচা-প্রতিরোধক ও উন্নতমানের ফিনিশিং পেইন্ট।' : '100% Anti-rust powder coat for outdoor durability.'}
             </p>
           </div>
           <div className="flex items-start gap-2.5">
-            <Check className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+            <Check className="h-5 w-5 text-brand-primary flex-shrink-0 mt-0.5" strokeWidth={1.75} />
             <p className="leading-relaxed">
               {locale === 'bn' ? 'সম্পূর্ণ হাতে তৈরি আকর্ষণীয় জ্যামিতিক নকশা।' : 'Handcrafted geometric aesthetics for premium homes.'}
             </p>
           </div>
           <div className="flex items-start gap-2.5">
-            <Check className="h-5 w-5 text-emerald-600 flex-shrink-0 mt-0.5" />
+            <Check className="h-5 w-5 text-brand-primary flex-shrink-0 mt-0.5" strokeWidth={1.75} />
             <p className="leading-relaxed">
               {locale === 'bn' ? 'সহজে ওয়ালে হ্যাং করার স্ক্রু ও গাইডলাইন সহ।' : 'Quick 1-minute mounting kits included for free.'}
             </p>
@@ -449,28 +449,28 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       </div>
 
       {/* Inline Checkout Order Form Card */}
-      <div ref={formRef} id="order-form" className="max-w-2xl mx-auto bg-white border-2 border-brand-primary rounded-3xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden">
-        
+      <div ref={formRef} id="order-form" className="max-w-2xl mx-auto bg-white border border-brand-border rounded-2xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden">
+
         {/* Decorative corner tag */}
-        <div className="absolute top-0 right-0 bg-brand-primary text-white text-[9px] font-black uppercase tracking-wider py-1 px-4 rounded-bl-xl">
+        <div className="absolute top-0 right-0 bg-brand-primary text-white text-[9px] font-bold uppercase tracking-wider py-1 px-4 rounded-bl-lg">
           {locale === 'bn' ? 'ক্যাশ অন ডেলিভারি' : 'Cash On Delivery'}
         </div>
 
         {/* Title */}
         <div className="text-center space-y-2 border-b border-brand-border pb-4">
-          <h2 className="text-xl md:text-2xl font-black text-brand-text">
+          <h2 className="font-serif text-xl md:text-2xl font-semibold text-brand-text">
             {locale === 'bn' ? 'অর্ডার করতে নিচের ফর্মটি পূরণ করুন' : 'Fill out the form below to order'}
           </h2>
           <p className="text-xs text-brand-muted font-bold">
-            {locale === 'bn' ? '🚚 আমাদের প্রতিনিধি কল করে অর্ডার কনফার্ম করবেন।' : '🚚 No advance payment needed, pay upon receipt.'}
+            {locale === 'bn' ? 'আমাদের প্রতিনিধি কল করে অর্ডার কনফার্ম করবেন।' : 'No advance payment needed, pay upon receipt.'}
           </p>
         </div>
 
         {/* Order Details Preview summary */}
-        <div className="bg-brand-surface border border-brand-border rounded-2xl p-4 flex gap-4 items-center text-xs">
+        <div className="bg-brand-surface border border-brand-border rounded-xl p-4 flex gap-4 items-center text-xs">
           <img src={product.image} className="h-12 w-12 rounded-lg object-cover border border-brand-border" />
           <div className="flex-1 min-w-0">
-            <span className="font-extrabold text-brand-text truncate block">{nameLabel}</span>
+            <span className="font-bold text-brand-text truncate block">{nameLabel}</span>
             <span className="text-[10px] text-brand-muted block mt-0.5">
               {selectedColor && `${locale === 'bn' ? 'রঙ: ' + selectedColor.bn : 'Color: ' + selectedColor.en}`}
               {selectedSize && ` / ${locale === 'bn' ? 'সাইজ: ' + selectedSize.bn : 'Size: ' + selectedSize.en}`}
@@ -588,7 +588,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               </button>
             </div>
             {paymentMethod === 'bkash' && (
-              <div className="p-3 bg-rose-50 border border-rose-100 rounded-xl text-[10px] text-rose-800 font-semibold leading-relaxed">
+              <div className="p-3 bg-brand-secondary/5 border border-brand-secondary/20 rounded-xl text-[10px] text-brand-text font-semibold leading-relaxed">
                 {locale === 'bn'
                   ? 'বিকাশ পেমেন্ট করতে চাইলে ০১৭XXXXXXXX নম্বরে পেমেন্ট করে ট্রানজেকশন আইডি আমাদের অর্ডার ভেরিফিকেশন কল এলে শেয়ার করুন।'
                   : 'To complete bKash payments, send money to 017XXXXXXXX and share transaction ID on verification call.'}
@@ -616,7 +616,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full py-4 rounded-2xl bg-brand-primary text-white font-black text-xs hover:bg-brand-primary-alt shadow-lg shadow-brand-primary/25 transition-all-custom flex items-center justify-center gap-2 mt-4 disabled:opacity-50"
+            className="w-full py-4 rounded-lg bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white font-bold text-xs shadow-sm hover:shadow-lg hover:shadow-brand-primary/25 transition-all-custom flex items-center justify-center gap-2 mt-4 disabled:opacity-50"
           >
             <ShoppingBag className="h-4.5 w-4.5" />
             <span>
@@ -630,7 +630,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
       {/* Customer Reviews Section */}
       <div className="space-y-6 pt-4 border-t border-brand-border">
-        <h3 className="font-extrabold text-brand-text text-base">
+        <h3 className="font-serif font-semibold text-brand-text text-base">
           {locale === 'bn' ? 'কাস্টমারদের মতামত ও রিভিউ' : 'Customer Testimonials'}
         </h3>
 
@@ -642,12 +642,12 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
           ].map((rev, idx) => (
             <div key={idx} className="bg-white border border-brand-border rounded-2xl p-5 space-y-3 shadow-sm">
               <div className="flex justify-between items-center text-xs">
-                <span className="font-extrabold text-brand-text">{rev.name}</span>
+                <span className="font-bold text-brand-text">{rev.name}</span>
                 <span className="text-[10px] text-brand-muted">{rev.date}</span>
               </div>
-              <div className="flex text-yellow-400">
+              <div className="flex text-[#C6A15B]">
                 {[...Array(rev.rating)].map((_, i) => (
-                  <Star key={i} className="h-3 w-3 fill-current" />
+                  <Star key={i} className="h-3 w-3 fill-current" strokeWidth={1.5} />
                 ))}
               </div>
               <p className="text-xs text-brand-muted leading-relaxed font-semibold">

@@ -327,7 +327,7 @@ export default function ShopPage() {
                     {/* Content */}
                     <div className="p-5 space-y-3">
                       <Link 
-                        href={`/${locale}/p/${product.id}`}
+                        href={`/${locale}/product/${product.id}`}
                         className="block font-bold text-brand-text group-hover:text-brand-primary transition-all-custom line-clamp-2 min-h-[40px] text-sm hover:underline"
                       >
                         {name}

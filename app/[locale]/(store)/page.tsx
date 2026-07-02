@@ -127,7 +127,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
     <div className="group bg-white rounded-2xl border border-brand-border [@media(hover:hover)]:hover:border-[#C6A15B]/50 overflow-hidden shadow-sm [@media(hover:hover)]:hover:shadow-xl [@media(hover:hover)]:hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
       {/* Product Image Wrapper */}
       <div className="relative aspect-square bg-brand-surface overflow-hidden">
-        <Link href={`/${locale}/p/${p.id}`} className="block h-full w-full">
+        <Link href={`/${locale}/product/${p.id}`} className="block h-full w-full">
           <img src={p.image} alt={name} className="h-full w-full object-cover [@media(hover:hover)]:group-hover:scale-110 transition-transform duration-500 ease-out" />
         </Link>
 
@@ -148,7 +148,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
 
         {/* Quick-add overlay (appears on hover) */}
         <Link
-          href={`/${locale}/p/${p.id}`}
+          href={`/${locale}/product/${p.id}`}
           className="absolute inset-x-0 bottom-0 translate-y-full [@media(hover:hover)]:group-hover:translate-y-0 bg-gradient-to-r from-brand-secondary to-brand-secondary-dark text-white text-[10px] font-bold uppercase tracking-widest py-2.5 flex items-center justify-center gap-1.5 transition-transform duration-300 ease-out"
         >
           <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
@@ -160,7 +160,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
       <div className="p-4 flex-1 flex flex-col justify-between gap-3">
         <div className="space-y-1.5">
           <h3 className="text-xs sm:text-sm font-semibold text-brand-text leading-snug line-clamp-2 [@media(hover:hover)]:hover:text-brand-primary transition-colors">
-            <Link href={`/${locale}/p/${p.id}`}>{name}</Link>
+            <Link href={`/${locale}/product/${p.id}`}>{name}</Link>
           </h3>
 
           {/* Price + Stock */}
@@ -198,7 +198,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
           </button>
         ) : (
           <Link
-            href={`/${locale}/p/${p.id}`}
+            href={`/${locale}/product/${p.id}`}
             className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white text-[11px] font-bold shadow-sm [@media(hover:hover)]:hover:shadow-lg [@media(hover:hover)]:hover:shadow-brand-primary/30 [@media(hover:hover)]:hover:-translate-y-0.5 transition-all duration-200"
           >
             <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
