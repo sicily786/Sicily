@@ -29,7 +29,7 @@ const PRODUCTS = [
   { id:'3', name_en:'Vintage Wooden Wall Frame',   name_bn:'ভিন্টেজ কাঠের ওয়াল ফ্রেম',          price:1500, sale_price:1200,  image:'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=500', rating:4.7, reviews:32, discount:'-20%', sizes:['12"','16"','20"'], stock:4 },
   { id:'4', name_en:'Rose Gold Candle Set',        name_bn:'রোজ গোল্ড ক্যান্ডেল সেট',           price:680,  sale_price:540,   image:'https://images.unsplash.com/photo-1507692049790-de58290a4334?auto=format&fit=crop&q=80&w=500', rating:5.0, reviews:9,  discount:'-21%', sizes:['6"'], stock:12 },
   { id:'5', name_en:'Ceramic Flower Vase',         name_bn:'সিরামিক ফ্লাওয়ার ভেজ',              price:920,  sale_price:750,   image:'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&q=80&w=500', rating:4.6, reviews:14, discount:'-18%', sizes:['8"','10"'], stock:3 },
-  { id:'6', name_en:'Macrame Wall Hanging',        name_bn:'ম্যাক্রামে ওয়াল হ্যাঙ্গিং',         price:1100, sale_price:null,  image:'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=500', rating:4.8, reviews:21, discount:null,   sizes:['24"','30"','36"'], stock:15 },
+  { id:'6', name_en:'Macrame Wall Hanging',        name_bn:'ম্যাক্রামে ওয়াল হ্যাঙ্গিং',         price:1100, sale_price:null,  image:'https://images.unsplash.com/photo-1616137422495-1e9e46e2aa77?auto=format&fit=crop&q=80&w=500', rating:4.8, reviews:21, discount:null,   sizes:['24"','30"','36"'], stock:0 },
 ];
 
 /* ── HERO SLIDER ────────────────────────────────────── */
@@ -170,9 +170,14 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
               <span className="text-[10px] text-brand-muted line-through">৳{p.price}</span>
             )}
             <span className="text-brand-border">|</span>
-            {p.stock <= 5 ? (
-              <span className="text-[10px] font-bold text-brand-secondary">
-                {locale === 'bn' ? `মাত্র ${p.stock}টি বাকি` : `Only ${p.stock} left`}
+            {p.stock === 0 ? (
+              <span className="text-[10px] font-bold text-brand-muted">
+                {locale === 'bn' ? 'স্টকে নেই' : 'Out of Stock'}
+              </span>
+            ) : p.stock <= 5 ? (
+              <span className="flex items-center gap-1 text-[10px] font-bold text-brand-secondary">
+                <span className="h-1.5 w-1.5 rounded-full bg-brand-secondary" />
+                {p.stock}
               </span>
             ) : (
               <span className="text-[10px] font-bold text-brand-primary">
@@ -182,14 +187,24 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
           </div>
         </div>
 
-        {/* Add to Cart Button (full-width, with Bangla label) */}
-        <Link
-          href={`/${locale}/p/${p.id}`}
-          className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white text-[11px] font-bold shadow-sm hover:shadow-lg hover:shadow-brand-primary/30 hover:-translate-y-0.5 transition-all duration-200"
-        >
-          <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
-          <span>{locale === 'bn' ? 'কার্টে যোগ করুন' : 'Add to Cart'}</span>
-        </Link>
+        {/* Add to Cart Button (full-width, with Bangla label) — disabled when out of stock */}
+        {p.stock === 0 ? (
+          <button
+            disabled
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-brand-surface text-brand-muted text-[11px] font-bold cursor-not-allowed"
+          >
+            <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
+            <span>{locale === 'bn' ? 'স্টকে নেই' : 'Out of Stock'}</span>
+          </button>
+        ) : (
+          <Link
+            href={`/${locale}/p/${p.id}`}
+            className="w-full flex items-center justify-center gap-1.5 py-2.5 rounded-lg bg-gradient-to-br from-brand-primary to-brand-primary-alt text-white text-[11px] font-bold shadow-sm hover:shadow-lg hover:shadow-brand-primary/30 hover:-translate-y-0.5 transition-all duration-200"
+          >
+            <ShoppingCart className="h-3.5 w-3.5" strokeWidth={1.75} />
+            <span>{locale === 'bn' ? 'কার্টে যোগ করুন' : 'Add to Cart'}</span>
+          </Link>
+        )}
       </div>
     </div>
   );
