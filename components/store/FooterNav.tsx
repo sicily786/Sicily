@@ -37,7 +37,7 @@ export default function FooterNav() {
             <Link href={`/${currentLocale}`} className="flex items-center gap-2.5 group w-fit">
               <img
                 src="/Sicily_icon.png"
-                alt="Sicily Decor"
+                alt="Sicily"
                 className="h-10 w-10 object-contain group-hover:scale-105 transition-transform duration-200"
               />
               <div className="leading-none text-left">
@@ -148,7 +148,7 @@ export default function FooterNav() {
                 <span className="h-7 w-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
                   <Mail className="h-3.5 w-3.5 text-[#C6A15B]" strokeWidth={1.75} />
                 </span>
-                <span>hello@sicilydecor.com</span>
+                <span>hello@sicily.com</span>
               </li>
             </ul>
           </div>

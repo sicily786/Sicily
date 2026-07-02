@@ -52,8 +52,8 @@ export default function OrderConfirmationPage({ params }: { params: { id: string
           </h1>
           <p className="text-xs text-brand-muted font-bold max-w-sm mx-auto leading-relaxed">
             {locale === 'bn' 
-              ? 'আমাদের Sicily Decor শপে অর্ডার করার জন্য আপনাকে আন্তরিক ধন্যবাদ।' 
-              : 'Thank you for shopping with Sicily Decor. Your order is registered.'}
+              ? 'আমাদের Sicily শপে অর্ডার করার জন্য আপনাকে আন্তরিক ধন্যবাদ।' 
+              : 'Thank you for shopping with Sicily. Your order is registered.'}
           </p>
         </div>
       </div>
