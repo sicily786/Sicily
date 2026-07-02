@@ -157,7 +157,7 @@ export default function FooterNav() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/8 py-4">
+        <div className="py-4">
           <div className="max-w-7xl mx-auto px-6 lg:px-8 flex flex-col items-center gap-2">
             <img
               src="/SSLCommerz-Pay-With-logo-All-Size-01.png"
