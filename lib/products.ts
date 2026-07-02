@@ -72,8 +72,8 @@ export const PRODUCTS: HomeProduct[] = [
   },
   { 
     id: '6', 
-    name_en: 'Macrame Wall Hanging', 
-    name_bn: 'ম্যাক্রামে ওয়াল হ্যাঙ্গিং', 
+    name_en: 'Serene Yellow Orchid', 
+    name_bn: 'হলুদ অর্কিডের স্নিগ্ধতায় সাজুক ঘর!', 
     price: 1100, 
     sale_price: null, 
     image: '/49.jpg', 
