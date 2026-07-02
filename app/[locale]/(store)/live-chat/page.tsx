@@ -76,23 +76,23 @@ export default function LiveChatPage() {
         {/* Interactive CTA buttons */}
         <div className="space-y-3 pt-2">
           
-          {/* Main WhatsApp Button */}
+          {/* Main WhatsApp Button (Glowing WhatsApp Green) */}
           <a
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2.5 w-full py-4.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 via-emerald-600 to-[#057476] text-white font-black text-xs hover:scale-[1.01] hover:shadow-lg hover:shadow-emerald-500/20 active:scale-95 transition-all duration-200"
+            className="flex items-center justify-center gap-3 w-full py-4 px-6 rounded-2xl bg-[#25D366] text-white font-bold text-sm hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#25D366]/20 active:translate-y-0 transition-all duration-300 shadow-md"
           >
             <WhatsAppIcon className="h-5 w-5 fill-current" />
             <span>{locale === 'bn' ? 'হোয়াটসঅ্যাপে চ্যাট করুন' : 'Chat on WhatsApp'}</span>
           </a>
 
-          {/* Secondary Direct Call Button */}
+          {/* Secondary Direct Call Button (Soft Teal Tint) */}
           <a
             href="tel:+8801700000000"
-            className="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl border border-gray-150 text-gray-600 hover:bg-gray-50/50 text-xs font-extrabold transition-all"
+            className="flex items-center justify-center gap-2.5 w-full py-4 px-6 rounded-2xl bg-[#057476]/8 hover:bg-[#057476]/12 text-[#057476] font-bold text-sm hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#057476]/5 active:translate-y-0 transition-all duration-300 shadow-sm"
           >
-            <PhoneCall className="h-4 w-4 text-[#057476]" />
+            <PhoneCall className="h-4.5 w-4.5 text-[#057476]" />
             <span>{locale === 'bn' ? 'সরাসরি কল করুন' : 'Call Directly'}</span>
           </a>
         </div>
