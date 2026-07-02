@@ -176,7 +176,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-          {PRODUCTS.slice(0, 3).map((p, i) => <ProductCard key={i} p={p} locale={locale} />)}
+          {PRODUCTS.slice(0, 6).map((p, i) => <ProductCard key={i} p={p} locale={locale} />)}
         </div>
       </section>
 
@@ -233,7 +233,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5">
-          {PRODUCTS.slice(3, 6).map((p, i) => <ProductCard key={i} p={p} locale={locale} />)}
+          {PRODUCTS.slice(6, 12).map((p, i) => <ProductCard key={i} p={p} locale={locale} />)}
         </div>
       </section>
 
