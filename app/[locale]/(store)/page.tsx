@@ -163,16 +163,7 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
             <Link href={`/${locale}/p/${p.id}`}>{name}</Link>
           </h3>
 
-          {/* Available sizes (display only) */}
-          <div className="flex items-center flex-wrap gap-1.5 mt-1.5">
-            {p.sizes.map((size) => (
-              <span key={size} className="text-[10px] font-semibold text-brand-muted">
-                {size}
-              </span>
-            ))}
-          </div>
-
-          {/* Price — moved up right below sizes */}
+          {/* Price */}
           <div className="flex items-baseline gap-1.5 mt-1.5">
             <span className="text-sm sm:text-base font-bold text-brand-secondary">৳{price}</span>
             {p.sale_price && (
