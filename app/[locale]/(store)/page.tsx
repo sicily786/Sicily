@@ -175,8 +175,8 @@ function ProductCard({ p, locale }: { p: typeof PRODUCTS[0]; locale: string }) {
                 {locale === 'bn' ? 'স্টকে নেই' : 'Out of Stock'}
               </span>
             ) : p.stock <= 5 ? (
-              <span className="flex items-center gap-1 text-[10px] font-bold text-brand-secondary whitespace-nowrap">
-                <span className="h-1.5 w-1.5 rounded-full bg-brand-secondary flex-shrink-0" />
+              <span className="flex items-center gap-1 text-[10px] font-bold text-brand-primary whitespace-nowrap">
+                <span className="h-1.5 w-1.5 rounded-full bg-brand-primary flex-shrink-0" />
                 {locale === 'bn' ? `${p.stock}টি বাকি` : `${p.stock} left`}
               </span>
             ) : (
