@@ -7,10 +7,11 @@ import { PRODUCTS } from '@/lib/products';
 import ProductCard from '@/components/store/ProductCard';
 
 /* Shop catalog — shares the same card/shape as the homepage, with an
-   added category field for filtering. */
+   added category field matching the site's real categories (Flower
+   Tub / Tree Plant / Wall Stand, same as the homepage and footer). */
 const SHOP_PRODUCTS = PRODUCTS.map((p, i) => ({
   ...p,
-  category: ['hangers', 'flowers', 'frames', 'flowers', 'hangers', 'frames'][i] as 'flowers' | 'hangers' | 'frames',
+  category: ['wall-stand', 'flower-tub', 'wall-stand', 'flower-tub', 'flower-tub', 'wall-stand'][i] as 'flower-tub' | 'tree-plant' | 'wall-stand',
 }));
 
 export default function ShopPage() {
@@ -21,10 +22,10 @@ export default function ShopPage() {
   const [sortBy, setSortBy] = useState<string>('featured');
 
   const categories = [
-    { id: 'all', label_en: 'All Decor', label_bn: 'সব সামগ্রী' },
-    { id: 'flowers', label_en: 'Handmade Flowers', label_bn: 'হাতে তৈরি ফুল' },
-    { id: 'hangers', label_en: 'Metal Hangers', label_bn: 'মেটাল হ্যাঙ্গার' },
-    { id: 'frames', label_en: 'Wooden Frames', label_bn: 'কাঠের ফ্রেম' },
+    { id: 'all', label_en: 'All Categories', label_bn: 'সব ক্যাটাগরি' },
+    { id: 'flower-tub', label_en: 'Flower Tub', label_bn: 'ফ্লাওয়ার টাব' },
+    { id: 'tree-plant', label_en: 'Tree Plant', label_bn: 'ট্রি প্ল্যান্ট' },
+    { id: 'wall-stand', label_en: 'Wall Stand', label_bn: 'ওয়াল স্ট্যান্ড' },
   ];
 
   // Filtering
