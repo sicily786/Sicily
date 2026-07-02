@@ -320,8 +320,27 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
       }
     }
 
+    const slugify = (text: string) => {
+      return text
+        .toString()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '')
+        .replace(/\-\-+/g, '-')
+        .replace(/^-+/, '')
+        .replace(/-+$/, '');
+    };
+
     const merged = { ...mockProducts, ...loadedProducts };
-    const matched = merged[params.slug] || merged['1'];
+    const mergedList = Object.values(merged);
+    const slugLower = params.slug.toLowerCase();
+    const matched = mergedList.find(p => 
+      p.id === params.slug ||
+      slugify(p.name_en) === slugLower ||
+      slugify(p.name_bn) === slugLower ||
+      p.name_en.toLowerCase().includes(slugLower) ||
+      p.name_bn.toLowerCase().includes(slugLower)
+    ) || merged['1'];
     
     setProduct(matched);
     setActiveImage(0);
