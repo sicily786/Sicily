@@ -1,12 +1,15 @@
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 import { createServerClient } from '@supabase/ssr';
-import { type NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 
 const intlMiddleware = createMiddleware(routing);
 
 export default async function middleware(request: NextRequest) {
-  const response = intlMiddleware(request);
+  // /auth/* lives outside the [locale] segment — skip locale routing for it
+  const response = request.nextUrl.pathname.startsWith('/auth')
+    ? NextResponse.next()
+    : intlMiddleware(request);
 
   // Refresh the Supabase auth session cookie on every request
   const supabase = createServerClient(
@@ -33,5 +36,5 @@ export default async function middleware(request: NextRequest) {
 
 export const config = {
   // Match dynamic routes and avoid static files
-  matcher: ['/', '/(bn)/:path*', '/((?!api|_next|_vercel|.*\\..*).*)']
+  matcher: ['/', '/(bn)/:path*', '/((?!api|_next|_vercel|auth|.*\\..*).*)']
 };
