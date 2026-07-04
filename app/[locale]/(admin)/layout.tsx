@@ -1,6 +1,6 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -14,6 +14,7 @@ import {
   Globe
 } from 'lucide-react';
 import Link from 'next/link';
+import { createClient } from '@/lib/supabase';
 
 export default function AdminLayout({
   children,
@@ -21,7 +22,19 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
   const currentLocale = pathname.split('/')[1] || 'bn';
+
+  // The login screen renders full-bleed, without the sidebar/header chrome
+  if (pathname === `/${currentLocale}/admin/login` || pathname === '/admin/login') {
+    return <>{children}</>;
+  }
+
+  const handleLogout = async () => {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    router.push(`/${currentLocale}/admin/login`);
+  };
 
   const menuItems = [
     { label: 'Overview', icon: LayoutDashboard, href: `/${currentLocale}/admin` },
@@ -79,7 +92,10 @@ export default function AdminLayout({
 
         {/* Sidebar Footer */}
         <div className="p-4 border-t border-brand-primary-alt">
-          <button className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white transition-all-custom">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3 w-full px-4 py-3 rounded-xl text-sm font-medium text-white/70 hover:bg-white/5 hover:text-white transition-all-custom"
+          >
             <LogOut className="h-4.5 w-4.5" />
             <span>Log Out</span>
           </button>

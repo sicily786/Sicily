@@ -29,7 +29,17 @@ export default async function middleware(request: NextRequest) {
     }
   );
 
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  // Protect /admin/* routes — only allowlisted admin emails may pass
+  const pathname = request.nextUrl.pathname;
+  if (pathname.startsWith('/admin') && pathname !== '/admin/login') {
+    const adminEmails = (process.env.ADMIN_EMAILS || '').split(',').map((e) => e.trim().toLowerCase()).filter(Boolean);
+    const isAdmin = user?.email && adminEmails.includes(user.email.toLowerCase());
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL('/admin/login', request.url));
+    }
+  }
 
   return response;
 }
