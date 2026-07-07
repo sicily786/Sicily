@@ -103,7 +103,8 @@ export default function AdminDashboard() {
         {stats.map((stat, i) => {
           const Icon = stat.icon;
           return (
-            <div key={i} className="bg-white p-6 rounded-2xl border border-brand-border hover:shadow-lg transition-all-custom">
+            <div key={i} className="relative bg-white p-6 rounded-2xl border border-brand-border hover:shadow-lg transition-all-custom overflow-hidden">
+              <span className="absolute top-0 left-0 h-full w-[3px] bg-brand-accent/60" />
               <div className="flex justify-between items-start">
                 <span className="text-sm font-semibold text-brand-muted">{stat.label}</span>
                 <div className={`p-2.5 rounded-xl ${stat.color}`}>
@@ -111,7 +112,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-2xl font-black text-brand-text">{loading ? '—' : stat.value}</span>
+                <span className="text-2xl font-serif font-bold text-brand-text">{loading ? '—' : stat.value}</span>
               </div>
             </div>
           );
@@ -123,7 +124,7 @@ export default function AdminDashboard() {
         {/* Sales Chart */}
         <div className="bg-white p-6 rounded-2xl border border-brand-border lg:col-span-2 space-y-6">
           <div className="flex justify-between items-center">
-            <h3 className="font-bold text-brand-text text-lg">Weekly Sales Performance</h3>
+            <h3 className="font-serif font-semibold text-brand-text text-lg">Weekly Sales Performance</h3>
           </div>
           <div className="h-64 flex items-end justify-between gap-3 pt-4 border-b border-brand-border pb-1">
             {weeklySales.map((val, idx) => (
@@ -144,7 +145,7 @@ export default function AdminDashboard() {
 
         {/* Low Stock Alerts */}
         <div className="bg-white p-6 rounded-2xl border border-brand-border space-y-6">
-          <h3 className="font-bold text-brand-text text-lg flex items-center gap-2">
+          <h3 className="font-serif font-semibold text-brand-text text-lg flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-brand-secondary" />
             <span>Low Stock Alerts</span>
           </h3>
@@ -173,7 +174,7 @@ export default function AdminDashboard() {
       {/* Recent Orders Table */}
       <div className="bg-white p-6 rounded-2xl border border-brand-border space-y-6">
         <div className="flex justify-between items-center">
-          <h3 className="font-bold text-brand-text text-lg">Recent Orders</h3>
+          <h3 className="font-serif font-semibold text-brand-text text-lg">Recent Orders</h3>
           <Link href="/admin/orders" className="text-sm font-semibold text-brand-primary hover:text-brand-primary-alt flex items-center gap-1">
             <span>View All Orders</span>
             <ArrowUpRight className="h-4 w-4" />

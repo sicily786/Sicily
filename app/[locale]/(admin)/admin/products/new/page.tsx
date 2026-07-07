@@ -28,6 +28,8 @@ export default function AdminNewProductPage() {
   const [image, setImage] = useState('');
   const [category, setCategory] = useState('flower-tub');
   const [stock, setStock] = useState('10');
+  const [shortDescEn, setShortDescEn] = useState('');
+  const [shortDescBn, setShortDescBn] = useState('');
   const [descEn, setDescEn] = useState('');
   const [descBn, setDescBn] = useState('');
   const [landingPageActive, setLandingPageActive] = useState(false);
@@ -91,6 +93,8 @@ export default function AdminNewProductPage() {
       stock: Number(stock),
       images: [image],
       category_id: categoryRow?.id ?? null,
+      short_description_en: shortDescEn || null,
+      short_description_bn: shortDescBn || null,
       description_en: descEn || null,
       description_bn: descBn || null,
       landing_page_active: landingPageActive,
@@ -161,6 +165,34 @@ export default function AdminNewProductPage() {
               placeholder="যেমন: হাতে তৈরি সিরামিক ফুলদানি"
               className="w-full bg-brand-surface border border-brand-border rounded-xl py-2.5 px-4 text-xs text-brand-text outline-none focus:border-brand-primary transition-all-custom font-bold"
               required
+            />
+          </div>
+        </div>
+
+        {/* Short Description — shown right under the title on the product page */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-brand-muted uppercase">
+              Short Description (English)
+            </label>
+            <input
+              type="text"
+              value={shortDescEn}
+              onChange={(e) => setShortDescEn(e.target.value)}
+              placeholder="One-line summary shown under the title"
+              className="w-full bg-brand-surface border border-brand-border rounded-xl py-2.5 px-4 text-xs text-brand-text outline-none focus:border-brand-primary transition-all-custom font-bold"
+            />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-[10px] font-bold text-brand-muted uppercase">
+              সংক্ষিপ্ত বিবরণ (বাংলা)
+            </label>
+            <input
+              type="text"
+              value={shortDescBn}
+              onChange={(e) => setShortDescBn(e.target.value)}
+              placeholder="টাইটেলের নিচে দেখানো এক লাইনের বিবরণ"
+              className="w-full bg-brand-surface border border-brand-border rounded-xl py-2.5 px-4 text-xs text-brand-text outline-none focus:border-brand-primary transition-all-custom font-bold"
             />
           </div>
         </div>
@@ -271,8 +303,9 @@ export default function AdminNewProductPage() {
           </span>
         </div>
 
-        {/* Descriptions (optional) */}
+        {/* Detailed Description — shown at the bottom of the product page */}
         <div className="space-y-6 pt-4 border-t border-brand-border">
+          <h3 className="text-[10px] font-bold text-brand-muted uppercase">Detailed Description (Optional)</h3>
           <div className="space-y-1.5">
             <label className="text-[10px] font-bold text-brand-muted uppercase">
               Description (English)
