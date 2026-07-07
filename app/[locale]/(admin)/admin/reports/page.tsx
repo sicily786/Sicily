@@ -2,53 +2,103 @@
 
 import { useState, useEffect } from 'react';
 import { useLocale } from 'next-intl';
-import { BarChart3, Download, TrendingUp, Search, Layers, RefreshCw, ShoppingCart, CheckCircle2 } from 'lucide-react';
+import { BarChart3, Download, TrendingUp, MapPin, Package, RefreshCw, CreditCard, XCircle } from 'lucide-react';
+import { createClient } from '@/lib/supabase';
 
-interface SearchLog {
-  query: string;
-  count: number;
-  last_searched: string;
+interface OrderRow {
+  id: string;
+  order_number: string;
+  total: number;
+  payment_method: string;
+  order_status: string;
+  district: string;
+  created_at: string;
 }
 
-const FALLBACK_SEARCH_LOGS: SearchLog[] = [
-  { query: 'Tulip Hanger', count: 18, last_searched: '2026-06-29 11:20' },
-  { query: 'Metal frame', count: 12, last_searched: '2026-06-29 10:45' },
-  { query: 'Wall Decor Set', count: 8, last_searched: '2026-06-28 14:15' },
-  { query: 'Vase', count: 5, last_searched: '2026-06-27 16:30' }
-];
+interface ItemRow {
+  order_id: string;
+  product_name: string;
+  qty: number;
+  price: number;
+}
+
+type RangeKey = 'today' | 'week' | 'month' | 'all';
 
 export default function AdminReportsPage() {
   const locale = useLocale();
+  const isBn = locale === 'bn';
 
-  const [searchLogs, setSearchLogs] = useState<SearchLog[]>([]);
-  const [isExporting, setIsExporting] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState<OrderRow[]>([]);
+  const [items, setItems] = useState<ItemRow[]>([]);
+  const [range, setRange] = useState<RangeKey>('week');
 
   useEffect(() => {
-    const stored = localStorage.getItem('sicily_search_logs');
-    if (stored) {
-      try {
-        const parsed: SearchLog[] = JSON.parse(stored);
-        setSearchLogs(parsed.sort((a, b) => b.count - a.count));
-      } catch (e) {
-        console.error(e);
-        setSearchLogs(FALLBACK_SEARCH_LOGS);
-      }
-    } else {
-      localStorage.setItem('sicily_search_logs', JSON.stringify(FALLBACK_SEARCH_LOGS));
-      setSearchLogs(FALLBACK_SEARCH_LOGS);
-    }
+    const load = async () => {
+      const supabase = createClient();
+      const [ordersRes, itemsRes] = await Promise.all([
+        supabase.from('orders').select('id, order_number, total, payment_method, order_status, district, created_at').order('created_at', { ascending: false }),
+        supabase.from('order_items').select('order_id, product_name, qty, price'),
+      ]);
+      if (ordersRes.data) setOrders(ordersRes.data);
+      if (itemsRes.data) setItems(itemsRes.data);
+      setLoading(false);
+    };
+    load();
   }, []);
 
+  const rangeStart = (key: RangeKey): Date => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    if (key === 'week') d.setDate(d.getDate() - 6);
+    if (key === 'month') d.setDate(d.getDate() - 29);
+    if (key === 'all') return new Date(0);
+    return d;
+  };
+
+  const start = rangeStart(range);
+  const filteredOrders = orders.filter((o) => new Date(o.created_at) >= start);
+  const filteredOrderIds = new Set(filteredOrders.map((o) => o.id));
+  const filteredItems = items.filter((i) => filteredOrderIds.has(i.order_id));
+
+  const totalRevenue = filteredOrders.reduce((sum, o) => sum + Number(o.total), 0);
+  const totalOrders = filteredOrders.length;
+  const avgOrderValue = totalOrders > 0 ? Math.round(totalRevenue / totalOrders) : 0;
+  const codCount = filteredOrders.filter((o) => o.payment_method === 'cod').length;
+  const onlineCount = totalOrders - codCount;
+  const cancelledCount = filteredOrders.filter((o) => o.order_status === 'cancelled' || o.order_status === 'returned').length;
+  const cancelRate = totalOrders > 0 ? Math.round((cancelledCount / totalOrders) * 100) : 0;
+
+  const districtTotals = new Map<string, number>();
+  filteredOrders.forEach((o) => districtTotals.set(o.district, (districtTotals.get(o.district) || 0) + 1));
+  const topDistricts = Array.from(districtTotals.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  const productTotals = new Map<string, number>();
+  filteredItems.forEach((i) => productTotals.set(i.product_name, (productTotals.get(i.product_name) || 0) + i.qty));
+  const topProducts = Array.from(productTotals.entries()).sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  const maxDistrict = Math.max(...topDistricts.map((d) => d[1]), 1);
+  const maxProduct = Math.max(...topProducts.map((p) => p[1]), 1);
+
   const handleExportCSV = () => {
-    setIsExporting(true);
-    setTimeout(() => {
-      setIsExporting(false);
-      alert(
-        locale === 'bn' 
-          ? 'কনভার্সন এবং রেভিনিউ রিপোর্ট এক্সপোর্ট সম্পন্ন হয়েছে! (sicily_report_2026.csv)' 
-          : 'E-commerce conversion & revenue report exported! (sicily_report_2026.csv)'
-      );
-    }, 1200);
+    const header = 'Order Number,Date,District,Payment Method,Status,Total\n';
+    const rows = filteredOrders.map((o) =>
+      `${o.order_number},${new Date(o.created_at).toLocaleDateString()},${o.district},${o.payment_method},${o.order_status},${o.total}`
+    ).join('\n');
+    const blob = new Blob([header + rows], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sicily_report_${range}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const rangeLabels: Record<RangeKey, { en: string; bn: string }> = {
+    today: { en: 'Today', bn: 'আজ' },
+    week: { en: 'This Week', bn: 'এই সপ্তাহ' },
+    month: { en: 'This Month', bn: 'এই মাস' },
+    all: { en: 'All Time', bn: 'সর্বমোট' },
   };
 
   return (
@@ -58,161 +108,143 @@ export default function AdminReportsPage() {
         <div>
           <h1 className="text-2xl font-black text-brand-text flex items-center gap-2">
             <BarChart3 className="h-6 w-6 text-brand-primary" />
-            <span>{locale === 'bn' ? 'অ্যানালিটিক্স ও রিপোর্টস' : 'Analytics & Performance'}</span>
+            <span>{isBn ? 'অ্যানালিটিক্স ও রিপোর্টস' : 'Analytics & Performance'}</span>
           </h1>
           <p className="text-xs text-brand-muted mt-1.5 font-medium">
-            {locale === 'bn' ? 'সাপ্তাহিক রেভিনিউ ট্রেন্ড, কনভার্সন রেট এবং কাস্টমার সার্চ লগস ট্র্যাক করুন।' : 'Weekly revenue growth, funnel conversion rates, and client search keywords.'}
+            {isBn ? 'রেভিনিউ, পেমেন্ট ব্রেকডাউন, জনপ্রিয় জেলা ও প্রোডাক্ট ট্র্যাক করুন।' : 'Revenue, payment breakdown, top districts, and best-selling products.'}
           </p>
         </div>
 
-        {/* Export Button */}
         <button
           onClick={handleExportCSV}
-          disabled={isExporting}
-          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-border bg-white text-brand-text hover:border-brand-primary hover:text-brand-primary font-bold text-xs shadow-sm transition-all-custom disabled:opacity-50"
+          className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand-border bg-white text-brand-text hover:border-brand-primary hover:text-brand-primary font-bold text-xs shadow-sm transition-all-custom"
         >
-          {isExporting ? (
-            <RefreshCw className="h-4 w-4 animate-spin" />
-          ) : (
-            <Download className="h-4 w-4" />
-          )}
-          <span>{locale === 'bn' ? 'রিপোর্ট এক্সপোর্ট করুন' : 'Export CSV Report'}</span>
+          <Download className="h-4 w-4" />
+          <span>{isBn ? 'CSV এক্সপোর্ট করুন' : 'Export CSV'}</span>
         </button>
       </div>
 
-      {/* Grid Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* SVG Weekly Revenue Growth Line Chart */}
-        <div className="bg-white border border-brand-border rounded-3xl p-6 lg:col-span-2 space-y-6 shadow-sm">
-          <div className="flex justify-between items-center">
-            <h3 className="font-extrabold text-brand-text text-sm flex items-center gap-2">
-              <TrendingUp className="h-4.5 w-4.5 text-brand-primary" />
-              <span>{locale === 'bn' ? 'সাপ্তাহিক রেভিনিউ গ্রোথ' : 'Weekly Revenue Trends'}</span>
-            </h3>
-            <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-100">
-              +14.2% Growth
-            </span>
-          </div>
+      {/* Date Range Filter */}
+      <div className="flex items-center gap-1.5 flex-wrap">
+        {(Object.keys(rangeLabels) as RangeKey[]).map((key) => (
+          <button
+            key={key}
+            onClick={() => setRange(key)}
+            className={`px-4 py-2 rounded-xl text-xs font-bold transition-all-custom border ${
+              range === key
+                ? 'bg-brand-primary border-brand-primary text-white shadow-md shadow-brand-primary/10'
+                : 'bg-white border-brand-border text-brand-text hover:border-brand-primary/30'
+            }`}
+          >
+            {isBn ? rangeLabels[key].bn : rangeLabels[key].en}
+          </button>
+        ))}
+      </div>
 
-          {/* SVG line drawing */}
-          <div className="relative pt-4">
-            <svg viewBox="0 0 500 200" className="w-full h-48 overflow-visible">
-              <defs>
-                <linearGradient id="chartGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#008B8B" stopOpacity="0.2"/>
-                  <stop offset="100%" stopColor="#008B8B" stopOpacity="0.0"/>
-                </linearGradient>
-              </defs>
-              
-              {/* Grid Lines */}
-              <line x1="0" y1="50" x2="500" y2="50" stroke="#f3f4f6" strokeWidth="1" strokeDasharray="4" />
-              <line x1="0" y1="100" x2="500" y2="100" stroke="#f3f4f6" strokeWidth="1" strokeDasharray="4" />
-              <line x1="0" y1="150" x2="500" y2="150" stroke="#f3f4f6" strokeWidth="1" strokeDasharray="4" />
-              
-              {/* Shaded Area Under Line */}
-              <path 
-                d="M 0 170 C 50 140, 100 150, 150 110 C 200 70, 250 90, 300 50 C 350 10, 400 30, 450 15 C 475 8, 500 5, 500 5 L 500 200 L 0 200 Z" 
-                fill="url(#chartGradient)" 
-              />
-              
-              {/* Line Curve */}
-              <path 
-                d="M 0 170 C 50 140, 100 150, 150 110 C 200 70, 250 90, 300 50 C 350 10, 400 30, 450 15 C 475 8, 500 5, 500 5" 
-                fill="none" 
-                stroke="#008B8B" 
-                strokeWidth="3.5" 
-                strokeLinecap="round" 
-              />
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        {[
+          { label: isBn ? 'মোট রেভিনিউ' : 'Total Revenue', value: `৳${totalRevenue.toLocaleString()}`, icon: TrendingUp },
+          { label: isBn ? 'মোট অর্ডার' : 'Total Orders', value: `${totalOrders}`, icon: Package },
+          { label: isBn ? 'গড় অর্ডার মূল্য' : 'Avg Order Value', value: `৳${avgOrderValue}`, icon: CreditCard },
+          { label: isBn ? 'বাতিল/ফেরত হার' : 'Cancel/Return Rate', value: `${cancelRate}%`, icon: XCircle },
+        ].map((stat, i) => {
+          const Icon = stat.icon;
+          return (
+            <div key={i} className="bg-white p-5 rounded-2xl border border-brand-border shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-[10px] font-bold text-brand-muted uppercase">{stat.label}</span>
+                <Icon className="h-4 w-4 text-brand-primary" />
+              </div>
+              <span className="text-xl font-serif font-bold text-brand-text">{loading ? '—' : stat.value}</span>
+            </div>
+          );
+        })}
+      </div>
 
-              {/* Data points markers */}
-              <circle cx="150" cy="110" r="5" fill="#008B8B" stroke="#ffffff" strokeWidth="2" className="drop-shadow-md" />
-              <circle cx="300" cy="50" r="5" fill="#008B8B" stroke="#ffffff" strokeWidth="2" className="drop-shadow-md" />
-              <circle cx="450" cy="15" r="5" fill="#008B8B" stroke="#ffffff" strokeWidth="2" className="drop-shadow-md" />
-            </svg>
-            
-            {/* Legend Labels */}
-            <div className="flex justify-between items-center text-[9px] font-bold text-brand-muted pt-2 px-1">
-              <span>{locale === 'bn' ? 'শনিবার' : 'Sat'}</span>
-              <span>{locale === 'bn' ? 'সোমবার' : 'Mon'}</span>
-              <span>{locale === 'bn' ? 'বুধবার' : 'Wed'}</span>
-              <span>{locale === 'bn' ? 'শুক্রবার' : 'Fri'}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* COD vs Online */}
+        <div className="bg-white border border-brand-border rounded-3xl p-6 space-y-6 shadow-sm">
+          <h3 className="font-extrabold text-brand-text text-sm flex items-center gap-2">
+            <CreditCard className="h-4.5 w-4.5 text-brand-primary" />
+            <span>{isBn ? 'পেমেন্ট পদ্ধতি ব্রেকডাউন' : 'Payment Method Breakdown'}</span>
+          </h3>
+          <div className="space-y-4">
+            <div className="space-y-1 text-xs">
+              <div className="flex justify-between font-bold text-brand-text">
+                <span>{isBn ? 'ক্যাশ অন ডেলিভারি' : 'Cash on Delivery'}</span>
+                <span className="text-brand-primary">{codCount} ({totalOrders > 0 ? Math.round((codCount / totalOrders) * 100) : 0}%)</span>
+              </div>
+              <div className="w-full h-3 rounded-full bg-brand-surface border border-brand-border overflow-hidden">
+                <div className="h-full bg-brand-primary rounded-full" style={{ width: `${totalOrders > 0 ? (codCount / totalOrders) * 100 : 0}%` }} />
+              </div>
+            </div>
+            <div className="space-y-1 text-xs">
+              <div className="flex justify-between font-bold text-brand-text">
+                <span>{isBn ? 'অনলাইন পেমেন্ট' : 'Online Payment'}</span>
+                <span className="text-brand-secondary">{onlineCount} ({totalOrders > 0 ? Math.round((onlineCount / totalOrders) * 100) : 0}%)</span>
+              </div>
+              <div className="w-full h-3 rounded-full bg-brand-surface border border-brand-border overflow-hidden">
+                <div className="h-full bg-brand-secondary rounded-full" style={{ width: `${totalOrders > 0 ? (onlineCount / totalOrders) * 100 : 0}%` }} />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Funnel Conversion Rates */}
+        {/* Top Districts */}
         <div className="bg-white border border-brand-border rounded-3xl p-6 space-y-6 shadow-sm">
           <h3 className="font-extrabold text-brand-text text-sm flex items-center gap-2">
-            <ShoppingCart className="h-4.5 w-4.5 text-brand-primary" />
-            <span>{locale === 'bn' ? 'কনভার্সন ফানেল' : 'Funnel Conversion'}</span>
+            <MapPin className="h-4.5 w-4.5 text-brand-primary" />
+            <span>{isBn ? 'শীর্ষ জেলাসমূহ' : 'Top Districts'}</span>
           </h3>
-
-          <div className="space-y-4 pt-2">
-            {[
-              { label_en: 'Store Visitors', label_bn: 'ভিজিটর সংখ্যা', val: 5000, pct: '100%' },
-              { label_en: 'Added to Cart', label_bn: 'কার্টে যোগ করেছেন', val: 850, pct: '17%' },
-              { label_en: 'Checkout Process', label_bn: 'চেকআউট শুরু', val: 350, pct: '7%' },
-              { label_en: 'Confirmed Order', label_bn: 'অর্ডার সম্পন্ন', val: 150, pct: '3%' }
-            ].map((step, idx) => (
-              <div key={idx} className="space-y-1 text-xs">
-                <div className="flex justify-between items-baseline font-bold text-brand-text">
-                  <span>{locale === 'bn' ? step.label_bn : step.label_en}</span>
-                  <span className="text-brand-primary">{step.pct} ({step.val})</span>
+          {topDistricts.length === 0 ? (
+            <p className="text-xs text-brand-muted font-semibold">{isBn ? 'কোনো ডেটা নেই।' : 'No data yet.'}</p>
+          ) : (
+            <div className="space-y-3">
+              {topDistricts.map(([district, count]) => (
+                <div key={district} className="space-y-1 text-xs">
+                  <div className="flex justify-between font-bold text-brand-text">
+                    <span>{district}</span>
+                    <span className="text-brand-primary">{count} {isBn ? 'অর্ডার' : 'orders'}</span>
+                  </div>
+                  <div className="w-full h-2.5 rounded-full bg-brand-surface border border-brand-border overflow-hidden">
+                    <div className="h-full bg-brand-primary rounded-full" style={{ width: `${(count / maxDistrict) * 100}%` }} />
+                  </div>
                 </div>
-                <div className="w-full h-3 rounded-full bg-brand-surface border border-brand-border overflow-hidden">
-                  <div 
-                    className="h-full bg-brand-primary rounded-full" 
-                    style={{ width: step.pct }} 
-                  />
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Top Products */}
+      <div className="bg-white border border-brand-border rounded-3xl p-6 space-y-6 shadow-sm">
+        <div className="flex items-center gap-2 border-b border-brand-border pb-3">
+          <RefreshCw className="h-5 w-5 text-brand-primary" />
+          <h3 className="font-extrabold text-brand-text text-base">
+            {isBn ? 'সর্বাধিক বিক্রিত প্রোডাক্ট' : 'Best-Selling Products'}
+          </h3>
+        </div>
+
+        {topProducts.length === 0 ? (
+          <p className="text-xs text-brand-muted font-semibold text-center py-4">
+            {isBn ? 'এই সময়সীমায় কোনো বিক্রি নেই।' : 'No sales in this date range.'}
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {topProducts.map(([name, qty]) => (
+              <div key={name} className="space-y-1 text-xs">
+                <div className="flex justify-between font-bold text-brand-text">
+                  <span>{name}</span>
+                  <span className="text-brand-primary">{qty} {isBn ? 'পিস' : 'sold'}</span>
+                </div>
+                <div className="w-full h-2.5 rounded-full bg-brand-surface border border-brand-border overflow-hidden">
+                  <div className="h-full bg-brand-primary rounded-full" style={{ width: `${(qty / maxProduct) * 100}%` }} />
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Dynamic Search queries list */}
-      <div className="bg-white border border-brand-border rounded-3xl p-6 space-y-6 shadow-sm">
-        <div className="flex items-center gap-2 border-b border-brand-border pb-3">
-          <Search className="h-5 w-5 text-brand-primary" />
-          <h3 className="font-extrabold text-brand-text text-base">
-            {locale === 'bn' ? 'গ্রাহকদের খোঁজা শীর্ষ কিওয়ার্ড সমূহ' : 'Top Customer Search Queries'}
-          </h3>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full border-collapse text-left text-xs font-medium">
-            <thead>
-              <tr className="border-b border-brand-border text-brand-muted font-bold">
-                <th className="py-3 px-4">{locale === 'bn' ? 'সার্চ কিওয়ার্ড' : 'Search Keyword'}</th>
-                <th className="py-3 px-4">{locale === 'bn' ? 'সার্চ সংখ্যা' : 'Search Frequency'}</th>
-                <th className="py-3 px-4">{locale === 'bn' ? 'সর্বশেষ সার্চের সময়' : 'Last Searched'}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-brand-border">
-              {searchLogs.length === 0 ? (
-                <tr>
-                  <td colSpan={3} className="py-6 text-center text-brand-muted font-bold">
-                    {locale === 'bn' ? 'কোনো সার্চ লগ পাওয়া যায়নি।' : 'No search logs registered.'}
-                  </td>
-                </tr>
-              ) : (
-                searchLogs.map((log, idx) => (
-                  <tr key={idx} className="hover:bg-brand-surface/40">
-                    <td className="py-3 px-4 font-extrabold text-brand-text">{log.query}</td>
-                    <td className="py-3 px-4 font-bold text-brand-primary">
-                      <span className="inline-block px-2.5 py-0.5 rounded-full bg-brand-primary/10 text-brand-primary">
-                        {log.count} {locale === 'bn' ? 'বার' : 'times'}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-brand-muted font-bold">{log.last_searched}</td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        )}
       </div>
     </div>
   );
