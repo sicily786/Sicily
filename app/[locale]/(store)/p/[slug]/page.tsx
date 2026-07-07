@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocale } from 'next-intl';
 import { useCart } from '@/lib/cart';
 import { useRouter } from 'next/navigation';
-import { Star, ShoppingBag, ShieldCheck, Truck, RefreshCw, Plus, Minus, ArrowLeft, Check, ClipboardCheck, Phone, MapPin, PackageCheck, PackageX, Flame } from 'lucide-react';
+import { Star, ShoppingBag, ShieldCheck, Truck, RefreshCw, Plus, Minus, ArrowLeft, Check, ClipboardCheck, Phone, MapPin, PackageCheck, PackageX, Flame, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { PRODUCTS } from '@/lib/products';
 
@@ -385,6 +385,14 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
 
   return (
     <div className="space-y-12 pb-24 px-4 sm:px-0">
+      {/* Urgency Announcement Bar */}
+      <div className="bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-2 px-4 rounded-xl text-center shadow-md animate-pulse">
+        <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
+          <Flame className="h-3.5 w-3.5 fill-current" />
+          {locale === 'bn' ? 'সীমিত সময়ের অফার! স্টক শেষ হওয়ার আগেই অর্ডার করুন।' : 'Limited Time Offer! Order before stock runs out.'}
+        </span>
+      </div>
+
       {/* Back Button */}
       <Link 
         href={`/${locale}/shop`}
@@ -545,6 +553,51 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         </p>
       </div>
 
+      {/* Trust Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+        <div className="p-5 rounded-2xl border border-brand-border bg-brand-surface space-y-2 hover:border-[#C6A15B]/30 transition-all duration-200">
+          <div className="h-9 w-9 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+            <Sparkles className="h-4.5 w-4.5" />
+          </div>
+          <h4 className="text-xs font-bold text-brand-text">
+            {locale === 'bn' ? 'প্রিমিয়াম মেটেরিয়াল ও ফিনিশিং' : 'Premium Material & Finish'}
+          </h4>
+          <p className="text-[10.5px] leading-relaxed text-brand-muted font-medium">
+            {locale === 'bn' 
+              ? 'নিখুঁত রঙ ও সর্বোচ্চ স্থায়িত্ব নিশ্চিত করতে আমাদের প্রতিটি পণ্য সতর্কতার সাথে তৈরি।' 
+              : 'Each item is carefully crafted to ensure flawless look and maximum durability.'}
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl border border-brand-border bg-brand-surface space-y-2 hover:border-[#C6A15B]/30 transition-all duration-200">
+          <div className="h-9 w-9 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+            <ShieldCheck className="h-4.5 w-4.5" />
+          </div>
+          <h4 className="text-xs font-bold text-brand-text">
+            {locale === 'bn' ? 'নিরাপদ থ্রি-লেয়ার প্যাকেজিং' : 'Secure 3-Layer Packaging'}
+          </h4>
+          <p className="text-[10.5px] leading-relaxed text-brand-muted font-medium">
+            {locale === 'bn' 
+              ? 'ভাঙার কোনো ঝুঁকি ছাড়াই আপনার পছন্দের প্রোডাক্টটি শতভাগ সুরক্ষিতভাবে আপনার কাছে পৌঁছাবে।' 
+              : 'Your favorite items will reach you safely with no risk of physical damage.'}
+          </p>
+        </div>
+
+        <div className="p-5 rounded-2xl border border-brand-border bg-brand-surface space-y-2 hover:border-[#C6A15B]/30 transition-all duration-200">
+          <div className="h-9 w-9 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
+            <Truck className="h-4.5 w-4.5" />
+          </div>
+          <h4 className="text-xs font-bold text-brand-text">
+            {locale === 'bn' ? 'ক্যাশ অন ডেলিভারি সুবিধা' : 'Cash On Delivery'}
+          </h4>
+          <p className="text-[10.5px] leading-relaxed text-brand-muted font-medium">
+            {locale === 'bn' 
+              ? 'অগ্রিম কোনো টাকা দিতে হবে না। প্রোডাক্ট হাতে পেয়ে কোয়ালিটি দেখে তারপর পেমেন্ট করুন।' 
+              : 'No advance payment needed. Receive your order, inspect it, and then pay.'}
+          </p>
+        </div>
+      </div>
+
       {/* Product Benefits Section */}
       <div className="bg-brand-surface border border-brand-border rounded-2xl p-6 md:p-8 space-y-6">
         <h3 className="font-serif font-semibold text-brand-text text-base border-b border-brand-border pb-3 flex items-center gap-2">
@@ -561,6 +614,138 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         </div>
       </div>
 
+      {/* 3-Step Workflow */}
+      <div className="bg-brand-surface border border-brand-border rounded-2xl p-6 space-y-6">
+        <h3 className="font-serif font-semibold text-brand-text text-base border-b border-brand-border pb-3 flex items-center gap-2">
+          <Truck className="h-5 w-5 text-brand-primary" />
+          <span>{locale === 'bn' ? 'অর্ডার করার সহজ ৩টি ধাপ' : '3 Easy Steps to Order'}</span>
+        </h3>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+          <div className="space-y-2 relative">
+            <div className="flex items-center gap-3">
+              <span className="h-7 w-7 rounded-full bg-brand-primary text-white flex items-center justify-center text-xs font-extrabold">১</span>
+              <h4 className="text-xs font-bold text-brand-text">{locale === 'bn' ? 'ফর্মটি পূরণ করুন' : 'Fill the Form'}</h4>
+            </div>
+            <p className="text-[10.5px] leading-relaxed text-brand-muted pl-10 font-semibold">
+              {locale === 'bn' 
+                ? 'নিচের দেওয়া অর্ডার ফর্মটিতে আপনার নাম, সচল মোবাইল নম্বর এবং ডেলিভারির সঠিক ঠিকানা দিন।' 
+                : 'Enter your name, active phone number, and full address in the checkout form below.'}
+            </p>
+          </div>
+
+          <div className="space-y-2 relative">
+            <div className="flex items-center gap-3">
+              <span className="h-7 w-7 rounded-full bg-brand-primary text-white flex items-center justify-center text-xs font-extrabold">২</span>
+              <h4 className="text-xs font-bold text-brand-text">{locale === 'bn' ? 'অর্ডার ভেরিফিকেশন কল' : 'Call Verification'}</h4>
+            </div>
+            <p className="text-[10.5px] leading-relaxed text-brand-muted pl-10 font-semibold">
+              {locale === 'bn' 
+                ? 'ফর্ম সাবমিট করার পর আমাদের প্রতিনিধি আপনাকে কল করে অর্ডার ও ডেলিভারির সময় কনফার্ম করবে।' 
+                : 'Our support team will call you within a few hours to confirm the product size and address details.'}
+            </p>
+          </div>
+
+          <div className="space-y-2 relative">
+            <div className="flex items-center gap-3">
+              <span className="h-7 w-7 rounded-full bg-brand-primary text-white flex items-center justify-center text-xs font-extrabold">৩</span>
+              <h4 className="text-xs font-bold text-brand-text">{locale === 'bn' ? 'পণ্য বুঝে নিয়ে পেমেন্ট' : 'Cash On Delivery'}</h4>
+            </div>
+            <p className="text-[10.5px] leading-relaxed text-brand-muted pl-10 font-semibold">
+              {locale === 'bn' 
+                ? 'ডেলিভারি ম্যানের কাছ থেকে প্রোডাক্টটি বুঝে নিন এবং কোয়ালিটি দেখে সন্তুষ্ট হয়ে মূল্য পরিশোধ করুন।' 
+                : 'Receive the parcel from the delivery agent, verify product condition, and pay cash on delivery.'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Customer Reviews Section */}
+      <div className="space-y-6">
+        <div className="text-center space-y-1">
+          <h3 className="font-serif font-bold text-lg md:text-2xl text-brand-text">
+            {locale === 'bn' ? 'গ্রাহকদের সন্তুষ্টি ও রিয়েল মতামত' : 'Customer Reviews & Feedback'}
+          </h3>
+          <p className="text-xs text-brand-muted font-bold">
+            {locale === 'bn' ? 'আমাদের কাস্টমারদের কিছু মূল্যবান রিভিউ ও প্রতিক্রিয়া' : 'A few testimonials from our happy customers'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="p-5 rounded-2xl border border-brand-border bg-white space-y-3.5 shadow-sm relative">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-brand-secondary/15 flex items-center justify-center font-bold text-xs text-brand-secondary">
+                আ
+              </div>
+              <div>
+                <span className="text-xs font-bold text-brand-text block">আরিফ রহমান</span>
+                <span className="text-[9px] font-semibold text-emerald-600 flex items-center gap-0.5">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" /> {locale === 'bn' ? 'ভেরিফাইড ক্রেতা' : 'Verified Buyer'}
+                </span>
+              </div>
+            </div>
+            <div className="flex text-[#C6A15B]">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-3 w-3 fill-current" />
+              ))}
+            </div>
+            <p className="text-[11px] leading-relaxed text-brand-text font-semibold italic">
+              {locale === 'bn'
+                ? '"আমি থাই বানানা ট্রি-টা অর্ডার করেছিলাম। গাছ আর টব দুটোই খুব চমৎকার। ঘরে রাখার পর লুক অনেক লাক্সারি দেখাচ্ছে। প্যাকেজিং খুব ভালো ছিল।"'
+                : '"Ordered the Thai Banana tree. Both the plant and pot are excellent. Looks very luxury in the drawing room. Fast shipping."'}
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl border border-brand-border bg-white space-y-3.5 shadow-sm relative">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-brand-secondary/15 flex items-center justify-center font-bold text-xs text-brand-secondary">
+                ফ
+              </div>
+              <div>
+                <span className="text-xs font-bold text-brand-text block">ফারজানা আক্তার</span>
+                <span className="text-[9px] font-semibold text-emerald-600 flex items-center gap-0.5">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" /> {locale === 'bn' ? 'ভেরিফাইড ক্রেতা' : 'Verified Buyer'}
+                </span>
+              </div>
+            </div>
+            <div className="flex text-[#C6A15B]">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-3 w-3 fill-current" strokeWidth={1.5} />
+              ))}
+            </div>
+            <p className="text-[11px] leading-relaxed text-brand-text font-semibold italic">
+              {locale === 'bn'
+                ? '"অর্গানিক কোয়ালিটি এবং চমৎকার ফিনিশিং। অর্ডার করার পরের দিনই ঢাকার মধ্যে ডেলিভারি পেয়েছি। সিসিলি-র টিমকে ধন্যবাদ!"'
+                : '"Organic quality and amazing finish. Got same-day delivery inside Dhaka. Very customer friendly support."'}
+            </p>
+          </div>
+
+          <div className="p-5 rounded-2xl border border-brand-border bg-white space-y-3.5 shadow-sm relative">
+            <div className="flex items-center gap-2">
+              <div className="h-8 w-8 rounded-full bg-brand-secondary/15 flex items-center justify-center font-bold text-xs text-brand-secondary">
+                ই
+              </div>
+              <div>
+                <span className="text-xs font-bold text-brand-text block">ইমরান চৌধুরী</span>
+                <span className="text-[9px] font-semibold text-emerald-600 flex items-center gap-0.5">
+                  <Check className="h-2.5 w-2.5 stroke-[3]" /> {locale === 'bn' ? 'ভেরিফাইড ক্রেতা' : 'Verified Buyer'}
+                </span>
+              </div>
+            </div>
+            <div className="flex text-[#C6A15B]">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-3 w-3 fill-current" strokeWidth={1.5} />
+              ))}
+            </div>
+            <p className="text-[11px] leading-relaxed text-brand-text font-semibold italic">
+              {locale === 'bn'
+                ? '"অর্ডার করার পর কাস্টমার সাপোর্ট থেকে কল দিয়ে খুব সুন্দরভাবে বুঝিয়ে বলেছিল। রিটার্ন পলিসি আর সেবার মান অত্যন্ত প্রশংসনীয়।"'
+                : '"Great experience. Customer service called to confirm all sizes and details. High quality products and packing."'}
+            </p>
+          </div>
+        </div>
+      </div>
+
       {/* Inline Checkout Order Form Card */}
       <div ref={formRef} id="order-form" className="max-w-2xl mx-auto bg-white border border-brand-border rounded-2xl p-6 md:p-8 space-y-6 shadow-xl relative overflow-hidden">
 
@@ -572,7 +757,7 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
         {/* Title */}
         <div className="text-center space-y-2 border-b border-brand-border pb-4">
           <h2 className="font-serif text-xl md:text-2xl font-semibold text-brand-text">
-            {locale === 'bn' ? 'অर्डर করতে নিচের ফর্মটি পূরণ করুন' : 'Fill out the form below to order'}
+            {locale === 'bn' ? 'নিচের ফর্মটি পূরণ করে অর্ডার করুন' : 'Fill out the form below to order'}
           </h2>
           <p className="text-xs text-brand-muted font-bold">
             {locale === 'bn' ? 'আমাদের প্রতিনিধি কল করে অর্ডার কনফার্ম করবেন। কোনো অগ্রিম পেমেন্ট লাগবে না।' : 'No advance payment needed, pay upon receipt.'}
@@ -767,6 +952,71 @@ export default function ProductPage({ params }: { params: { slug: string } }) {
               </p>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* FAQ Accordion Section */}
+      <div className="space-y-6 pt-4">
+        <div className="text-center space-y-1">
+          <h3 className="font-serif font-bold text-lg md:text-2xl text-brand-text">
+            {locale === 'bn' ? 'সচরাচর জিজ্ঞাসিত প্রশ্নাবলী (FAQ)' : 'Frequently Asked Questions'}
+          </h3>
+          <p className="text-xs text-brand-muted font-bold">
+            {locale === 'bn' ? 'অর্ডার করার আগে জেনে নিন সাধারণ কিছু প্রশ্নের উত্তর' : 'Find answers to common questions about ordering'}
+          </p>
+        </div>
+
+        <div className="max-w-2xl mx-auto space-y-2.5">
+          <details className="group border border-brand-border bg-white rounded-2xl p-4 [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+            <summary className="flex items-center justify-between cursor-pointer focus:outline-none">
+              <span className="text-xs font-bold text-brand-text">
+                {locale === 'bn' ? 'ডেলিভারি চার্জ কত এবং কতদিনের মধ্যে পাব?' : 'Q: What are the shipping charges and timeline?'}
+              </span>
+              <span className="transition group-open:-rotate-180 text-brand-muted">
+                <Plus className="h-4 w-4 block group-open:hidden" />
+                <Minus className="h-4 w-4 hidden group-open:block" />
+              </span>
+            </summary>
+            <p className="mt-3 text-[11px] leading-relaxed text-brand-muted font-semibold border-t border-brand-border pt-3">
+              {locale === 'bn'
+                ? 'উত্তর: ঢাকা সিটির ভেতরে ডেলিভারি চার্জ ৮০ টাকা এবং ঢাকা সিটির বাইরে সারা বাংলাদেশে ১৫০ টাকা। ঢাকা সিটির ভেতরে ১-২ দিন এবং বাইরে ৩-৪ দিনের মধ্যে ডেলিভারি পেয়ে যাবেন।'
+                : 'A: Shipping fee is ৳80 inside Dhaka (1-2 days delivery) and ৳150 outside Dhaka (3-4 days delivery) all over Bangladesh.'}
+            </p>
+          </details>
+
+          <details className="group border border-brand-border bg-white rounded-2xl p-4 [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+            <summary className="flex items-center justify-between cursor-pointer focus:outline-none">
+              <span className="text-xs font-bold text-brand-text">
+                {locale === 'bn' ? 'পণ্য ডেলিভারির সময় নষ্ট বা ভেঙে গেলে কী হবে?' : 'Q: What if the product is damaged during transit?'}
+              </span>
+              <span className="transition group-open:-rotate-180 text-brand-muted">
+                <Plus className="h-4 w-4 block group-open:hidden" />
+                <Minus className="h-4 w-4 hidden group-open:block" />
+              </span>
+            </summary>
+            <p className="mt-3 text-[11px] leading-relaxed text-brand-muted font-semibold border-t border-brand-border pt-3">
+              {locale === 'bn'
+                ? 'উত্তর: আমরা থ্রি-লেয়ার বাবল র‍্যাপে ডেলিভারি করি। তারপরও যদি কোনো কারণে পণ্য নষ্ট হয়, তবে ডেলিভারি ম্যান থাকা অবস্থায়ই আমাদের সাথে যোগাযোগ করুন। আমরা সম্পূর্ণ ফ্রীতে আপনাকে নতুন পণ্য পাঠিয়ে দেব।'
+                : 'A: We use robust 3-layer bubble packaging. If anything breaks, return it with the delivery rider, call us, and we will send a new one free of charge.'}
+            </p>
+          </details>
+
+          <details className="group border border-brand-border bg-white rounded-2xl p-4 [&_summary::-webkit-details-marker]:hidden transition-all duration-300">
+            <summary className="flex items-center justify-between cursor-pointer focus:outline-none">
+              <span className="text-xs font-bold text-brand-text">
+                {locale === 'bn' ? 'অর্ডার কনফার্ম করতে কোনো অগ্রিম পেমেন্ট করতে হবে?' : 'Q: Do I need to pay in advance?'}
+              </span>
+              <span className="transition group-open:-rotate-180 text-brand-muted">
+                <Plus className="h-4 w-4 block group-open:hidden" />
+                <Minus className="h-4 w-4 hidden group-open:block" />
+              </span>
+            </summary>
+            <p className="mt-3 text-[11px] leading-relaxed text-brand-muted font-semibold border-t border-brand-border pt-3">
+              {locale === 'bn'
+                ? 'উত্তর: না, সিসিলি-তে অর্ডার করতে কোনো অগ্রিম টাকা দিতে হবে না। ক্যাশ অন ডেলিভারি (COD) সুবিধায় প্রোডাক্ট হাতে পেয়ে সম্পূর্ণ চেক করে তারপর পেমেন্ট করতে পারবেন।'
+                : 'A: No advance payment is needed. Pay cash only after receiving and verifying the product.'}
+            </p>
+          </details>
         </div>
       </div>
 
