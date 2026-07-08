@@ -350,9 +350,9 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
               )}
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-[#25D366] text-white font-extrabold text-xs shadow-sm hover:opacity-90 transition-all-custom"
+              className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg bg-[#25D366] text-white font-bold text-[11px] shadow-sm hover:opacity-90 transition-all-custom"
             >
-              <WhatsAppIcon className="h-4 w-4" />
+              <WhatsAppIcon className="h-3.5 w-3.5" />
               <span>{isBn ? 'অর্ডার কনফার্মেশন পাঠান' : 'Send Order Confirmation'}</span>
             </a>
 
@@ -364,9 +364,9 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
                 )}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[#25D366]/40 text-[#128C7E] font-extrabold text-xs hover:bg-[#25D366]/5 transition-all-custom"
+                className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg border border-[#25D366]/40 text-[#128C7E] font-bold text-[11px] hover:bg-[#25D366]/5 transition-all-custom"
               >
-                <WhatsAppIcon className="h-4 w-4" />
+                <WhatsAppIcon className="h-3.5 w-3.5" />
                 <span>{isBn ? 'শিপিং আপডেট পাঠান' : 'Send Shipping Update'}</span>
               </a>
             )}
@@ -376,9 +376,9 @@ export default function AdminOrderDetailPage({ params }: { params: { id: string 
                 href={getWhatsAppURL(order.phone, WA_TEMPLATES.ORDER_DELIVERED(order.customer_name))}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-[#25D366]/40 text-[#128C7E] font-extrabold text-xs hover:bg-[#25D366]/5 transition-all-custom"
+                className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg border border-[#25D366]/40 text-[#128C7E] font-bold text-[11px] hover:bg-[#25D366]/5 transition-all-custom"
               >
-                <WhatsAppIcon className="h-4 w-4" />
+                <WhatsAppIcon className="h-3.5 w-3.5" />
                 <span>{isBn ? 'ডেলিভারি কনফার্মেশন পাঠান' : 'Send Delivery Confirmation'}</span>
               </a>
             )}
