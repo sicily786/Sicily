@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useLocale } from 'next-intl';
 import { useCart } from '@/lib/cart';
 import { useRouter } from 'next/navigation';
-import { Star, ShoppingBag, ShoppingCart, ShieldCheck, Truck, RefreshCw, Plus, Minus, ArrowLeft, Check, ClipboardCheck, Phone, MapPin, PackageCheck, PackageX, Flame, Sparkles, Frame, Flower2, Wrench, BookOpen, Gift, Package, Tag, X as XIcon } from 'lucide-react';
+import { Star, ShoppingBag, ShoppingCart, ShieldCheck, Truck, RefreshCw, Plus, Minus, ArrowLeft, Check, ClipboardCheck, Phone, MapPin, PackageCheck, PackageX, Flame, Sparkles, Frame, Flower2, Wrench, BookOpen, Gift, Package, Tag, Home, X as XIcon } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import type { HomeProduct } from '@/lib/products';
@@ -29,7 +29,7 @@ const BOX_ICON_MAP: Record<BoxItemIcon, typeof Frame> = {
   box: Package,
 };
 
-const BENEFIT_ICON_CYCLE = [Sparkles, Flower2, Wrench, Gift, ShieldCheck, Frame];
+const BENEFIT_ICON_CYCLE = [Sparkles, Flower2, Home, Gift, ShieldCheck, Frame];
 
 function buildSizeOptions(product: ProductDetail): SizeOption[] {
   return product.variants.length > 0
