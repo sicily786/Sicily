@@ -112,7 +112,7 @@ export default function AdminDashboard() {
                 </div>
               </div>
               <div className="mt-4 flex items-baseline gap-2">
-                <span className="text-2xl font-serif font-bold text-brand-text">{loading ? '—' : stat.value}</span>
+                <span className="text-2xl font-sans font-extrabold tracking-tight text-brand-text">{loading ? '—' : stat.value}</span>
               </div>
             </div>
           );

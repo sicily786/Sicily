@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useLocale } from 'next-intl';
-import { CheckCircle2, PhoneCall, MapPin, CreditCard, ShoppingBag, ArrowRight, Truck, Package } from 'lucide-react';
+import { CheckCircle2, PhoneCall, MapPin, CreditCard, ShoppingBag, ArrowRight, Truck, Package, Copy, Check } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase';
 
@@ -39,6 +39,7 @@ export default function OrderConfirmationPage({ params }: { params: { id: string
   const isBn = locale === 'bn';
   const [order, setOrder] = useState<OrderDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
   const [isFreshCheckout, setIsFreshCheckout] = useState(false);
 
   useEffect(() => {
@@ -170,7 +171,21 @@ export default function OrderConfirmationPage({ params }: { params: { id: string
             <span className="text-[10px] font-bold text-brand-muted uppercase tracking-wider block">
               {isBn ? 'ইনভয়েস আইডি' : 'Invoice Number'}
             </span>
-            <span className="text-base font-extrabold text-brand-text mt-0.5 block">{orderId}</span>
+            <div className="flex items-center gap-2 mt-0.5">
+              <span className="text-base font-extrabold text-brand-text">{orderId}</span>
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(orderId);
+                  setCopied(true);
+                  setTimeout(() => setCopied(false), 2000);
+                }}
+                className="p-1 rounded-lg text-brand-muted hover:text-brand-primary hover:bg-brand-surface transition-all-custom"
+                title={isBn ? 'কপি করুন' : 'Copy'}
+              >
+                {copied ? <Check className="h-3.5 w-3.5 text-emerald-600" /> : <Copy className="h-3.5 w-3.5" />}
+              </button>
+            </div>
           </div>
           <div className="text-left sm:text-right">
             <span className="text-[10px] font-bold text-brand-muted uppercase tracking-wider block">

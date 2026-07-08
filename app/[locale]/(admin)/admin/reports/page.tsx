@@ -156,7 +156,7 @@ export default function AdminReportsPage() {
                 <span className="text-[10px] font-bold text-brand-muted uppercase">{stat.label}</span>
                 <Icon className="h-4 w-4 text-brand-primary" />
               </div>
-              <span className="text-xl font-serif font-bold text-brand-text">{loading ? '—' : stat.value}</span>
+              <span className="text-xl font-sans font-extrabold tracking-tight text-brand-text">{loading ? '—' : stat.value}</span>
             </div>
           );
         })}

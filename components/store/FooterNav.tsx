@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { useLocale } from 'next-intl';
-import { Home, ShoppingCart, Crown, Flower2, Sprout, Frame, LayoutGrid, Info, Truck, RefreshCw, ShieldAlert, Phone, MapPin, PhoneCall, Mail, User } from 'lucide-react';
+import { Home, ShoppingCart, Crown, Flower2, Sprout, Frame, LayoutGrid, Info, Truck, RefreshCw, ShieldAlert, Phone, MapPin, PhoneCall, Mail, User, PackageSearch } from 'lucide-react';
 import Link from 'next/link';
 import { useCart } from '@/lib/cart';
 
@@ -115,6 +115,7 @@ export default function FooterNav() {
             <ul className="space-y-2.5">
               {[
                 { en: 'About Us', bn: 'আমাদের সম্পর্কে', icon: Info, href: `/${currentLocale}/about` },
+                { en: 'Track Order', bn: 'অর্ডার ট্র্যাক করুন', icon: PackageSearch, href: `/${currentLocale}/track-order` },
                 { en: 'Delivery Policy', bn: 'ডেলিভারি পলিসি', icon: Truck, href: `/${currentLocale}/delivery-policy` },
                 { en: 'Return & Refund', bn: 'রিটার্ন ও রিফান্ড', icon: RefreshCw, href: `/${currentLocale}/return-refund` },
                 { en: 'Privacy Policy', bn: 'প্রাইভেসি পলিসি', icon: ShieldAlert, href: `/${currentLocale}/privacy-policy` },
