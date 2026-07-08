@@ -1,5 +1,15 @@
 -- Safe to re-run: drops conflicting policies first, then recreates everything
 -- needed for guest/logged-in checkout to work end to end.
+--
+-- IMPORTANT: if inserts still fail with "new row violates row-level
+-- security policy" even though the policy/grants look correct, check
+-- whether the `authenticator` role has been granted the ability to
+-- SET ROLE into `anon`/`authenticated`. This project's authenticator
+-- role was missing that grant, which made PostgREST silently fail to
+-- switch roles and run every request under a role with no matching
+-- policies. Fix:
+--   GRANT anon TO authenticator WITH INHERIT TRUE, SET TRUE;
+--   GRANT authenticated TO authenticator WITH INHERIT TRUE, SET TRUE;
 
 GRANT SELECT, INSERT, UPDATE ON orders TO anon, authenticated;
 GRANT SELECT, INSERT ON order_items TO anon, authenticated;
@@ -7,7 +17,7 @@ GRANT SELECT ON customers TO anon;
 
 DROP POLICY IF EXISTS "Anyone can create an order" ON orders;
 CREATE POLICY "Anyone can create an order" ON orders
-  FOR INSERT WITH CHECK (true);
+  FOR INSERT TO anon, authenticated WITH CHECK (true);
 
 DROP POLICY IF EXISTS "Anyone can add items to an order" ON order_items;
 CREATE POLICY "Anyone can add items to an order" ON order_items
@@ -24,6 +34,18 @@ CREATE POLICY "Admin can update all orders" ON orders
 DROP POLICY IF EXISTS "Admin can view all order items" ON order_items;
 CREATE POLICY "Admin can view all order items" ON order_items
   FOR SELECT USING (auth.jwt() ->> 'email' = 'info.sicilybd@gmail.com');
+
+DROP POLICY IF EXISTS "Customers view own orders" ON orders;
+CREATE POLICY "Customers view own orders" ON orders
+  FOR SELECT USING (
+    customer_id IN (SELECT id FROM customers WHERE auth_user_id = auth.uid())
+  );
+
+-- Lets checkout (including guests) read back the order it just placed.
+-- Order IDs are random UUIDs, so this doesn't expose a browsable listing.
+DROP POLICY IF EXISTS "Anyone can view an order right after creating it" ON orders;
+CREATE POLICY "Anyone can view an order right after creating it" ON orders
+  FOR SELECT USING (true);
 
 -- Auto-generate order_number (e.g. ORD-2026-0001) on insert
 CREATE SEQUENCE IF NOT EXISTS orders_order_number_seq START 1;
