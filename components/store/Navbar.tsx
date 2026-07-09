@@ -71,7 +71,7 @@ export default function Navbar() {
               />
               <div className="leading-none text-left">
                 <span className="block text-[19px] font-serif font-semibold tracking-tight text-brand-text">Sicily</span>
-                <span className="block whitespace-nowrap text-[7px] font-semibold tracking-[0.18em] uppercase text-[#C6A15B] mt-1">মান নিয়ে আপোষহীন</span>
+                <span className="block max-w-[68px] text-[6px] leading-[1.3] font-semibold tracking-[0.05em] uppercase text-[#C6A15B] mt-1">Focus On Quality</span>
               </div>
             </Link>
 

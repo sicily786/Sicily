@@ -20,6 +20,17 @@ export async function fetchProductsServer(): Promise<HomeProduct[]> {
   return fetchProducts(createStatelessClient());
 }
 
+export async function fetchSettingsServer(keys: string[]): Promise<Record<string, string>> {
+  const supabase = createStatelessClient();
+  const { data, error } = await supabase
+    .from('settings')
+    .select('key, value')
+    .in('key', keys);
+
+  if (error || !data) return {};
+  return data.reduce((acc, row) => ({ ...acc, [row.key]: row.value }), {} as Record<string, string>);
+}
+
 export interface SitemapProduct {
   slug: string;
   updated_at: string;

@@ -7,7 +7,6 @@ import CheckoutForm from '@/components/store/CheckoutForm';
 import { ShoppingBag, ArrowRight, Tag, Check, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase';
-import TrustBadges from '@/components/widgets/TrustBadges';
 import type { Coupon } from '@/types';
 
 type CheckoutCoupon = Pick<Coupon, 'code' | 'type' | 'value' | 'min_order'>;
@@ -244,8 +243,6 @@ export default function CheckoutPage() {
                 </div>
               </div>
             </div>
-
-            <TrustBadges compact />
           </div>
         </div>
       )}

@@ -7,8 +7,9 @@ import { Camera } from 'lucide-react';
 import { fetchSettings } from '@/lib/settings';
 
 const FALLBACK_IMAGES = ['/02.09.23.jpg', '/37-5.jpg', '/38-7.jpg', '/47-3.jpg', '/49.jpg', '/51-2.jpg'];
+const FACEBOOK_URL = 'https://www.facebook.com/sicily7273';
 
-export default function InstagramFeed() {
+export default function InstagramFeed({ compact = false }: { compact?: boolean }) {
   const locale = useLocale();
   const isBn = locale === 'bn';
   const [images, setImages] = useState<string[]>(FALLBACK_IMAGES);
@@ -23,19 +24,19 @@ export default function InstagramFeed() {
   }, []);
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8">
+    <section className={compact ? '' : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-8'}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-serif text-base sm:text-lg font-semibold text-brand-text tracking-tight flex items-center gap-2">
           <Camera className="h-4 w-4 text-[#C6A15B]" strokeWidth={1.75} />
           <span>{isBn ? 'আমাদের কাস্টমারদের ছবি' : 'From Our Customers'}</span>
         </h2>
         <a
-          href="https://www.instagram.com/sicilybd7273"
+          href={FACEBOOK_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="text-[11px] font-semibold text-brand-primary hover:text-brand-secondary transition-colors uppercase tracking-wide"
         >
-          {isBn ? 'ইনস্টাগ্রামে দেখুন' : 'View on Instagram'}
+          {isBn ? 'ফেসবুকে দেখুন' : 'View on Facebook'}
         </a>
       </div>
 
@@ -43,7 +44,7 @@ export default function InstagramFeed() {
         {images.slice(0, 6).map((img, i) => (
           <a
             key={i}
-            href="https://www.instagram.com/sicilybd7273"
+            href={FACEBOOK_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="relative aspect-square rounded-lg overflow-hidden bg-brand-surface border border-brand-border group"

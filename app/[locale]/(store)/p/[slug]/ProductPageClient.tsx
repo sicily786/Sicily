@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useLocale } from 'next-intl';
 import { useCart } from '@/lib/cart';
 import { useRouter } from 'next/navigation';
@@ -8,15 +8,14 @@ import { Star, ShoppingBag, ShoppingCart, ShieldCheck, Truck, RefreshCw, Plus, M
 import Link from 'next/link';
 import Image from 'next/image';
 import type { HomeProduct } from '@/lib/products';
-import { fetchProducts, type ProductDetail, type BoxItemIcon } from '@/lib/products-db';
+import { type ProductDetail, type BoxItemIcon } from '@/lib/products-db';
 import { BD_DISTRICTS } from '@/lib/districts';
-import { fetchSettings } from '@/lib/settings';
 import { createClient } from '@/lib/supabase';
 import type { Coupon } from '@/types';
 import ProductCard from '@/components/store/ProductCard';
 import ViewerCount from '@/components/widgets/ViewerCount';
 import StockBadge from '@/components/widgets/StockBadge';
-import { ProductCardSkeleton } from '@/components/ui/Skeleton';
+import InstagramFeed from '@/components/widgets/InstagramFeed';
 
 interface SizeOption { en: string; bn: string; price: number; sale_price: number | null; }
 
@@ -42,7 +41,14 @@ function buildSizeOptions(product: ProductDetail): SizeOption[] {
     : [];
 }
 
-export default function ProductPageClient({ product }: { product: ProductDetail }) {
+interface ProductPageClientProps {
+  product: ProductDetail;
+  otherProducts: HomeProduct[];
+  deliveryInside: number;
+  deliveryOutside: number;
+}
+
+export default function ProductPageClient({ product, otherProducts, deliveryInside, deliveryOutside }: ProductPageClientProps) {
   const locale = useLocale();
   const router = useRouter();
   const { addToCart } = useCart();
@@ -50,8 +56,6 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
   const reviewSliderRef = useRef<HTMLDivElement>(null);
   const [reviewIndex, setReviewIndex] = useState(0);
 
-  const [otherProducts, setOtherProducts] = useState<HomeProduct[]>([]);
-  const [otherProductsLoading, setOtherProductsLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<SizeOption | null>(() => {
     const sizes = buildSizeOptions(product);
     return sizes.length > 0 ? sizes[0] : null;
@@ -66,7 +70,9 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
   const [district, setDistrict] = useState('dhaka');
   const [paymentMethod, setPaymentMethod] = useState<'cod' | 'online'>('cod');
   const sslEnabled = process.env.NEXT_PUBLIC_SSL_ENABLED === 'true';
-  const [shippingCharge, setShippingCharge] = useState(80);
+  // Shipping rates are fetched once on the server and passed down as props,
+  // so switching district is an instant local calculation — no network round trip.
+  const shippingCharge = district === 'dhaka' ? deliveryInside : deliveryOutside;
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Coupon / offer code (same validation rules as /checkout)
@@ -75,40 +81,6 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
   const [appliedCoupon, setAppliedCoupon] = useState<CheckoutCoupon | null>(null);
   const [couponError, setCouponError] = useState('');
   const [applyingCoupon, setApplyingCoupon] = useState(false);
-
-  useEffect(() => {
-    fetchProducts().then((all) => {
-      setOtherProducts(all.filter((p) => p.id !== product.id).slice(0, 3));
-      setOtherProductsLoading(false);
-    });
-  }, [product.id]);
-
-  // Read shipping rates from the store's Supabase-backed settings
-  useEffect(() => {
-    fetchSettings(['delivery_inside', 'delivery_outside']).then((s) => {
-      const deliveryInside = s.delivery_inside ? Number(s.delivery_inside) : 80;
-      const deliveryOutside = s.delivery_outside ? Number(s.delivery_outside) : 150;
-      setShippingCharge(district === 'dhaka' ? deliveryInside : deliveryOutside);
-    });
-  }, [district]);
-
-  // Auto-advance the review carousel; pauses whenever the visitor scrolls it themselves
-  useEffect(() => {
-    const count = product.reviews_list.length;
-    if (count <= 1) return;
-
-    const timer = setInterval(() => {
-      setReviewIndex((prev) => {
-        const next = (prev + 1) % count;
-        const el = reviewSliderRef.current;
-        const card = el?.children[next] as HTMLElement | undefined;
-        card?.scrollIntoView({ behavior: 'smooth', inline: 'start', block: 'nearest' });
-        return next;
-      });
-    }, 3500);
-
-    return () => clearInterval(timer);
-  }, [product.reviews_list.length]);
 
   const handleReviewScroll = () => {
     const el = reviewSliderRef.current;
@@ -312,9 +284,12 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
   return (
     <div className="space-y-12 pb-24 px-4 sm:px-0">
       {/* Urgency Announcement Bar */}
-      <div className="bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-2 px-4 rounded-xl text-center shadow-md animate-pulse">
-        <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest flex items-center justify-center gap-1.5">
-          <Flame className="h-3.5 w-3.5 fill-current" />
+      <div className="flex items-center justify-center gap-2.5 py-2.5 px-4 rounded-xl bg-gradient-to-r from-brand-secondary to-brand-secondary-dark text-white shadow-md shadow-brand-secondary/25">
+        <span className="relative flex h-5 w-5 items-center justify-center flex-shrink-0">
+          <span className="absolute inline-flex h-full w-full rounded-full bg-white/25 animate-ping" />
+          <Flame className="relative h-3.5 w-3.5 fill-current" />
+        </span>
+        <span className="text-[10px] sm:text-xs font-black uppercase tracking-widest text-center">
           {locale === 'bn' ? 'সীমিত সময়ের অফার! স্টক শেষ হওয়ার আগেই অর্ডার করুন।' : 'Limited Time Offer! Order before stock runs out.'}
         </span>
       </div>
@@ -373,15 +348,15 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
               </p>
             )}
 
-            <div className="flex items-center gap-2 pt-1 flex-wrap">
+            <div className="flex items-center gap-2.5 pt-1 flex-wrap">
               {product.reviews > 0 && (
                 <>
                   <div className="flex items-center text-[#C6A15B]">
                     {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 fill-current" strokeWidth={1.5} />
+                      <Star key={i} className="h-5 w-5 fill-current" strokeWidth={1.5} />
                     ))}
                   </div>
-                  <span className="text-xs font-bold text-brand-text">{product.rating}</span>
+                  <span className="text-base font-black text-brand-text">{product.rating}</span>
                   <span className="text-xs text-brand-muted">({product.reviews} {locale === 'bn' ? 'টি রিভিউ' : 'reviews'})</span>
                   <span className="text-brand-border">|</span>
                 </>
@@ -488,49 +463,9 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
         </p>
       </div>
 
-      {/* Trust Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-        <div className="p-5 rounded-2xl border border-brand-border bg-brand-surface space-y-2 hover:border-[#C6A15B]/30 transition-all duration-200">
-          <div className="h-9 w-9 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
-            <Sparkles className="h-4.5 w-4.5" />
-          </div>
-          <h4 className="text-xs font-bold text-brand-text">
-            {locale === 'bn' ? 'প্রিমিয়াম মেটেরিয়াল ও ফিনিশিং' : 'Premium Material & Finish'}
-          </h4>
-          <p className="text-[10.5px] leading-relaxed text-brand-muted font-medium">
-            {locale === 'bn'
-              ? 'নিখুঁত রঙ ও সর্বোচ্চ স্থায়িত্ব নিশ্চিত করতে আমাদের প্রতিটি পণ্য সতর্কতার সাথে তৈরি।'
-              : 'Each item is carefully crafted to ensure flawless look and maximum durability.'}
-          </p>
-        </div>
-
-        <div className="p-5 rounded-2xl border border-brand-border bg-brand-surface space-y-2 hover:border-[#C6A15B]/30 transition-all duration-200">
-          <div className="h-9 w-9 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
-            <ShieldCheck className="h-4.5 w-4.5" />
-          </div>
-          <h4 className="text-xs font-bold text-brand-text">
-            {locale === 'bn' ? 'নিরাপদ থ্রি-লেয়ার প্যাকেজিং' : 'Secure 3-Layer Packaging'}
-          </h4>
-          <p className="text-[10.5px] leading-relaxed text-brand-muted font-medium">
-            {locale === 'bn'
-              ? 'ভাঙার কোনো ঝুঁকি ছাড়াই আপনার পছন্দের প্রোডাক্টটি শতভাগ সুরক্ষিতভাবে আপনার কাছে পৌঁছাবে।'
-              : 'Your favorite items will reach you safely with no risk of physical damage.'}
-          </p>
-        </div>
-
-        <div className="p-5 rounded-2xl border border-brand-border bg-brand-surface space-y-2 hover:border-[#C6A15B]/30 transition-all duration-200">
-          <div className="h-9 w-9 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary">
-            <Truck className="h-4.5 w-4.5" />
-          </div>
-          <h4 className="text-xs font-bold text-brand-text">
-            {locale === 'bn' ? 'ক্যাশ অন ডেলিভারি সুবিধা' : 'Cash On Delivery'}
-          </h4>
-          <p className="text-[10.5px] leading-relaxed text-brand-muted font-medium">
-            {locale === 'bn'
-              ? 'অগ্রিম কোনো টাকা দিতে হবে না। প্রোডাক্ট হাতে পেয়ে কোয়ালিটি দেখে তারপর পেমেন্ট করুন।'
-              : 'No advance payment needed. Receive your order, inspect it, and then pay.'}
-          </p>
-        </div>
+      {/* Customer Photos */}
+      <div className="pt-2">
+        <InstagramFeed compact />
       </div>
 
       {/* Product Benefits Section */}
@@ -686,6 +621,8 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
             </label>
             <input
               type="text"
+              name="name"
+              autoComplete="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder={locale === 'bn' ? 'যেমন: করিম রহমান' : 'e.g. Karim Rahman'}
@@ -703,6 +640,8 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
                 <Phone className="absolute left-3.5 top-3 h-4.5 w-4.5 text-brand-muted" />
                 <input
                   type="tel"
+                  name="tel"
+                  autoComplete="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   placeholder="017XXXXXXXX"
@@ -737,6 +676,8 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
             <div className="relative">
               <MapPin className="absolute left-3.5 top-3 h-4.5 w-4.5 text-brand-muted" />
               <textarea
+                name="street-address"
+                autoComplete="street-address"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
                 placeholder={locale === 'bn' ? 'রোড নম্বর, হাউজ নম্বর, থানা, জেলা বিস্তারিত...' : 'House number, Road number, Thana info...'}
@@ -948,15 +889,13 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
       </div>
 
       {/* Related Products */}
-      {(otherProductsLoading || otherProducts.length > 0) && (
+      {otherProducts.length > 0 && (
         <div className="space-y-4 pt-6 border-t border-brand-border">
           <h3 className="font-serif font-semibold text-base text-brand-text">
             {locale === 'bn' ? 'আরও প্রোডাক্ট দেখুন' : 'You May Also Like'}
           </h3>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-            {otherProductsLoading
-              ? [0, 1, 2].map((i) => <ProductCardSkeleton key={i} />)
-              : otherProducts.map((p) => <ProductCard key={p.id} p={p} locale={locale} />)}
+            {otherProducts.map((p) => <ProductCard key={p.id} p={p} locale={locale} />)}
           </div>
         </div>
       )}
@@ -972,7 +911,7 @@ export default function ProductPageClient({ product }: { product: ProductDetail 
 
         <button
           onClick={scrollToForm}
-          className="flex-1 py-2.5 px-6 rounded-full bg-brand-primary text-white font-extrabold text-xs text-center hover:bg-brand-primary-alt shadow-md shadow-brand-primary/20 transition-all-custom animate-bounce"
+          className="flex-1 py-2.5 px-6 rounded-full bg-brand-primary text-white font-extrabold text-xs text-center hover:bg-brand-primary-alt transition-all-custom animate-cta-glow"
         >
           {locale === 'bn' ? 'এখনই অর্ডার করুন' : 'Order Instantly'}
         </button>

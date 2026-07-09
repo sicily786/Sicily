@@ -37,6 +37,7 @@ const config: Config = {
         'float': 'float 6s ease-in-out infinite',
         'fade-up': 'fadeUp 0.6s ease-out forwards',
         'shimmer': 'shimmer 2s linear infinite',
+        'cta-glow': 'ctaGlow 2.2s ease-in-out infinite',
       },
       keyframes: {
         float: {
@@ -50,6 +51,10 @@ const config: Config = {
         shimmer: {
           '0%': { backgroundPosition: '-200% 0' },
           '100%': { backgroundPosition: '200% 0' },
+        },
+        ctaGlow: {
+          '0%, 100%': { boxShadow: '0 2px 10px 0 rgba(5, 116, 118, 0.25)' },
+          '50%': { boxShadow: '0 4px 22px 4px rgba(5, 116, 118, 0.5)' },
         },
       },
     },
