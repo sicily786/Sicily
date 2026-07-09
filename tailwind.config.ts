@@ -53,8 +53,8 @@ const config: Config = {
           '100%': { backgroundPosition: '200% 0' },
         },
         ctaGlow: {
-          '0%, 100%': { boxShadow: '0 2px 10px 0 rgba(5, 116, 118, 0.25)' },
-          '50%': { boxShadow: '0 4px 22px 4px rgba(5, 116, 118, 0.5)' },
+          '0%, 100%': { boxShadow: '0 2px 12px 0 rgba(216, 0, 100, 0.35)', transform: 'scale(1)' },
+          '50%': { boxShadow: '0 6px 26px 6px rgba(216, 0, 100, 0.65)', transform: 'scale(1.035)' },
         },
       },
     },

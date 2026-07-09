@@ -519,7 +519,22 @@ export default function ProductPageClient({ product, otherProducts, deliveryInsi
 
       {/* Customer Reviews Section */}
       <div className="space-y-6">
-        <div className="text-center space-y-1">
+        <div className="text-center space-y-2.5">
+          {product.reviews > 0 && (
+            <div className="flex items-center justify-center gap-2.5">
+              <span className="text-4xl md:text-5xl font-black text-brand-text leading-none">{product.rating}</span>
+              <div className="flex flex-col items-start gap-1">
+                <div className="flex items-center text-[#C6A15B]">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} className="h-4 w-4 fill-current" strokeWidth={1.5} />
+                  ))}
+                </div>
+                <span className="text-[10px] font-bold text-brand-muted uppercase tracking-wide">
+                  {locale === 'bn' ? `৫ এর মধ্যে রেটিং • ${product.reviews}টি রিভিউ` : `out of 5 Rating • ${product.reviews} reviews`}
+                </span>
+              </div>
+            </div>
+          )}
           <h3 className="font-serif font-bold text-lg md:text-2xl text-brand-text">
             {locale === 'bn' ? 'গ্রাহকদের সন্তুষ্টি ও রিয়েল মতামত' : 'Customer Reviews & Feedback'}
           </h3>
